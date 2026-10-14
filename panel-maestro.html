@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CLANDES PREMIUM · Panel Maestro</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,sans-serif}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#2b210f,#0b0b0d 65%);color:#f7f2e8;min-height:100vh}main{max-width:780px;margin:auto;padding:28px 16px}h1{color:#f4c65d;font-size:1.75rem;margin:4px 0}p,.muted{color:#b6ac9b}.card{background:#1c1915;border:1px solid #73592d;border-radius:18px;padding:20px;margin-top:18px}label{display:block;margin:12px 0 6px}input{width:100%;padding:13px;background:#0d0c0b;border:1px solid #806335;border-radius:10px;color:#fff;font-size:16px}button{background:#e3b953;color:#17120a;border:0;border-radius:10px;padding:13px 17px;font-size:15px;font-weight:700;margin-top:16px;cursor:pointer}button:disabled{opacity:.5;cursor:wait}.secondary{background:#34302a;color:#fff}.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.store{border:1px solid #53452e;padding:14px;border-radius:12px;margin:12px 0}.status{font-size:.85rem;color:#e8c26d}#message{white-space:pre-wrap;line-height:1.5}small{color:#b6ac9b}a{color:#e3b953}
+</style>
+</head>
+<body><main>
+<header><div class="muted">♛ PLATAFORMA DE TIENDAS</div><h1>CLANDES PREMIUM</h1><p>Panel Maestro · Acceso exclusivo del administrador</p></header>
+<section class="card" id="setup"><h2>Configuración inicial</h2><p>Introduce la URL y la clave <strong>publishable</strong> de tu proyecto Supabase. No introduzcas claves secretas ni service_role.</p><label for="url">URL del proyecto</label><input id="url" value="https://sygstrvhaxjzmjveunpn.supabase.co"><label for="key">Clave publishable / anon</label><input id="key" placeholder="sb_publishable_..." autocomplete="off"><button id="connect">Conectar</button></section>
+<section class="card" id="login" hidden><h2>Iniciar sesión</h2><p>En esta primera versión se usa la contraseña de tu cuenta de Supabase Auth. El acceso por PIN de vendedores se implementará después.</p><form id="loginForm"><label for="email">Correo</label><input id="email" type="email" autocomplete="username" required><label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password" required><button type="submit">Entrar al panel</button></form></section>
+<section class="card" id="dashboard" hidden><div class="row"><h2>♛ Mis tiendas</h2><button class="secondary" id="logout">Cerrar sesión</button></div><p id="counter"></p><div id="stores"></div><button class="secondary" id="refresh">Actualizar tiendas</button></section>
+<section class="card"><small id="message" role="status">Configura tu conexión para comenzar.</small></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const $=id=>document.getElementById(id);
+let db=null;
+function msg(t){$('message').textContent=t}
+function show(section){for(const id of ['setup','login','dashboard'])$(id).hidden=id!==section}
+function formatDate(date){return date?new Date(date).toLocaleDateString('es-MX',{dateStyle:'medium'}):'Sin activar'}
+function makeText(tag,text,cls){const el=document.createElement(tag);el.textContent=text;if(cls)el.className=cls;return el}
+async function loadDashboard(){try{
+const {data:role,error:roleErr}=await db.rpc('es_admin_maestro');if(roleErr)throw roleErr;
+if(role!==true){await db.auth.signOut();show('login');msg('Esta cuenta no tiene permiso de administrador maestro.');return}
+show('dashboard');msg('Sesión maestra verificada.');
+const {data,error}=await db.from('resumen_tiendas').select('id,nombre,usuario,estado,plan,fecha_vencimiento').order('nombre');if(error)throw error;
+$('counter').textContent=`${data.length} tienda(s) registrada(s)`;$('stores').replaceChildren();
+if(!data.length)$('stores').append(makeText('p','Todavía no hay tiendas registradas.'));
+for(const t of data){const card=makeText('div','', 'store');const top=makeText('div','', 'row');top.append(makeText('strong',t.nombre),makeText('span',t.estado,'status'));card.append(top,makeText('p',`Usuario: ${t.usuario} · Plan: ${t.plan}`),makeText('small',`Vencimiento: ${formatDate(t.fecha_vencimiento)}`));$('stores').append(card)}
+}catch(e){msg('Error al cargar el panel: '+e.message)}}
+$('connect').onclick=async()=>{const url=$('url').value.trim(),key=$('key').value.trim();if(!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(url)||!key.startsWith('sb_publishable_')&&!key.startsWith('eyJ')){msg('Verifica la URL y utiliza solo la clave pública publishable/anon.');return}try{db=window.supabase.createClient(url,key);show('login');msg('Conexión configurada. Inicia sesión con tu cuenta de Supabase Auth.');const {data:{session}}=await db.auth.getSession();if(session)await loadDashboard()}catch(e){msg('No se pudo conectar: '+e.message)}};
+$('loginForm').onsubmit=async e=>{e.preventDefault();const button=e.target.querySelector('button');button.disabled=true;msg('Verificando acceso...');try{const {error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});$('password').value='';if(error)throw error;await loadDashboard()}catch(e){msg('No se pudo iniciar sesión: '+e.message)}finally{button.disabled=false}};
+$('refresh').onclick=loadDashboard;
+$('logout').onclick=async()=>{await db.auth.signOut();show('login');msg('Sesión cerrada.')};
+</script></body></html>
