@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CLANDES PREMIUM | Panel vendedor</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#090909;color:#f6e9c7;font-family:system-ui,Arial,sans-serif}header{padding:22px 16px;text-align:center;border-bottom:1px solid #6c521b;background:linear-gradient(120deg,#171105,#090909)}h1{font-size:1.4rem;letter-spacing:2px;color:#e7c16c;margin:0}h2{font-size:1.1rem;color:#e7c16c}main{max-width:760px;margin:auto;padding:18px}section{border:1px solid #5c451b;border-radius:14px;padding:18px;margin-bottom:18px;background:#13110e}label{display:block;margin:12px 0 5px;font-size:.9rem}input,textarea,select{width:100%;background:#0b0b0b;color:#fff;border:1px solid #766033;border-radius:9px;padding:12px;font:inherit}textarea{min-height:100px}button{background:#d6ae52;color:#161109;border:0;border-radius:9px;padding:12px 16px;font-weight:750;margin-top:14px;cursor:pointer}button.secondary{background:#302716;color:#f5dc9c;border:1px solid #80632c}button:disabled{opacity:.5;cursor:wait}.hidden{display:none!important}.muted{color:#b9aa89;font-size:.9rem}.notice{white-space:pre-wrap;overflow-wrap:anywhere;margin:12px 0;padding:10px;border-radius:8px;background:#252018}.bad{border:1px solid #aa4949;color:#ffb3b3}.good{border:1px solid #52885c;color:#bff3c6}.product{border-top:1px solid #544326;padding:12px 0}.product button{margin:6px 6px 0 0}.flex{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+</style>
+</head>
+<body><header><h1>♛ CLANDES PREMIUM</h1><div class="muted">Panel privado de vendedores</div></header><main>
+<section id="config"><h2>1. Conexión inicial</h2><p class="muted">Configura la URL y la clave pública (anon/publishable) de Supabase. Nunca uses la clave secreta o service_role. Se guardan únicamente en este navegador.</p><label>URL del proyecto</label><input id="url" placeholder="https://xxxxx.supabase.co" value="https://sygstrvhaxjzmjveunpn.supabase.co"><label>Clave pública (anon / publishable)</label><input id="key" type="text" autocomplete="off" placeholder="sb_publishable_... o eyJ..."><button id="connect">Conectar</button><div id="configmsg" class="notice hidden"></div></section>
+<section id="login" class="hidden"><h2>2. Iniciar sesión</h2><p class="muted">Usa el correo y contraseña de Supabase Auth vinculados a tu tienda.</p><label>Correo electrónico</label><input id="email" type="email" autocomplete="username"><label>Contraseña</label><input id="password" type="password" autocomplete="current-password"><button id="signin">Entrar al panel</button><button id="changeConfig" class="secondary">Cambiar conexión</button><div id="loginmsg" class="notice hidden"></div></section>
+<div id="dashboard" class="hidden"><section><div class="flex"><div><h2 id="shopName">Mi tienda</h2><div class="muted" id="shopUser"></div></div><button id="logout" class="secondary">Cerrar sesión</button></div><div id="dashmsg" class="notice hidden"></div></section>
+<section><h2>Agregar producto</h2><form id="productForm"><label>Nombre</label><input id="pname" required maxlength="140"><label>Descripción</label><textarea id="pdesc"></textarea><label>Precio (MXN)</label><input id="pprice" type="number" min="0" step="0.01" required><button type="submit">Guardar producto</button></form></section>
+<section><h2>Mis productos</h2><p class="muted">Agrega stock a tus productos. La publicación no requiere un botón de activación. Cada línea del cuadro se guardará como una unidad independiente. Usa solo códigos o licencias que estés autorizado a distribuir.</p><div id="products">Cargando...</div></section>
+<section id="paymentSection"><h2>Mis métodos de pago</h2><p class="muted">Configura los datos de transferencia de tu propia tienda. Mercado Pago y Stripe todavía no están conectados: sus opciones se muestran solo como próximas funciones.</p><form id="paymentForm"><label><input id="transferEnabled" type="checkbox" style="width:auto;margin-right:8px">Aceptar transferencias bancarias</label><label for="bank">Banco</label><input id="bank" maxlength="120" autocomplete="off" placeholder="Nombre del banco"><label for="beneficiary">Beneficiario</label><input id="beneficiary" maxlength="180" autocomplete="off" placeholder="Nombre del titular"><label for="clabe">CLABE interbancaria (18 dígitos)</label><input id="clabe" type="text" inputmode="numeric" maxlength="18" pattern="[0-9]{18}" autocomplete="off" placeholder="18 dígitos"><button id="savePayment" type="submit">Guardar transferencia</button></form><div id="paymentmsg" class="notice hidden" role="status" aria-live="polite"></div><p class="muted">Mercado Pago: próximamente · Stripe: próximamente. No se solicitan contraseñas, tokens ni claves secretas.</p></section>
+<section id="stockSection" class="hidden"><h2 id="stockTitle">Cargar stock</h2><p class="muted">Una unidad por línea. No pegues credenciales personales ni datos sensibles de terceros.</p><textarea id="stockLines" placeholder="CODIGO-001&#10;CODIGO-002"></textarea><button id="addStock">Agregar unidades</button><button id="cancelStock" class="secondary">Cancelar</button><div id="stockmsg" class="notice hidden"></div></section></div>
+</main>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+const $=id=>document.getElementById(id);let sb=null,shop=null,selected=null;
+function show(id,on=true){$(id).classList.toggle('hidden',!on)}
+function msg(id,txt,ok=false){const el=$(id);el.textContent=txt;el.className='notice '+(ok?'good':'bad');show(id)}
+function busy(id,v){$(id).disabled=v}
+function cleanError(e){return e?.message||String(e)}
+function validUrl(s){try{const u=new URL(s);return u.protocol==='https:'&&u.hostname.endsWith('.supabase.co')}catch{return false}}
+function start(url,key){if(!validUrl(url)||!key.trim())throw Error('Introduce una URL válida de Supabase y su clave pública.');sb=createClient(url,key,{auth:{persistSession:true,autoRefreshToken:true}});show('config',false);show('login');checkSession()}
+$('connect').onclick=()=>{try{const url=$('url').value.trim(),key=$('key').value.trim();start(url,key);localStorage.setItem('clandes_public_config',JSON.stringify({url,key}))}catch(e){msg('configmsg',cleanError(e))}};
+$('changeConfig').onclick=()=>{show('login',false);show('config');show('dashboard',false)};
+$('signin').onclick=async()=>{busy('signin',true);try{const {error}=await sb.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error)throw error;$('password').value='';await checkSession()}catch(e){msg('loginmsg',cleanError(e))}finally{busy('signin',false)}};
+$('logout').onclick=async()=>{await sb.auth.signOut();shop=null;show('dashboard',false);show('login')};
+async function checkSession(){const {data:{user},error}=await sb.auth.getUser();if(error||!user){show('dashboard',false);show('login');return}const {data, error:shopErr}=await sb.from('tiendas').select('id,nombre,usuario,estado').eq('propietario_id',user.id).limit(2);if(shopErr)throw new Error('No se pudo consultar tu tienda: '+shopErr.message);if(!data?.length){msg('loginmsg','Esta cuenta no tiene ninguna tienda vinculada. Contacta al administrador maestro.');return}if(data.length>1){msg('loginmsg','Esta cuenta tiene varias tiendas. Este panel inicial admite una sola; pide al administrador que configure el selector.');return}shop=data[0];if(shop.estado!=='activa'){msg('loginmsg','Tu tienda no está activa. Consulta al administrador.');return}$('shopName').textContent=shop.nombre;$('shopUser').textContent='@'+shop.usuario;show('login',false);show('dashboard');await loadProducts();await loadPayments()}
+async function loadProducts(){const {data,error}=await sb.from('productos').select('id,nombre,descripcion,precio,stock,activo').eq('tienda_id',shop.id).order('id',{ascending:false});if(error){msg('dashmsg','Error al cargar productos: '+error.message);return}const box=$('products');box.replaceChildren();if(!data.length){box.textContent='Todavía no tienes productos.';return}for(const p of data){const row=document.createElement('div');row.className='product';const title=document.createElement('strong');title.textContent=p.nombre+' — $'+Number(p.precio).toFixed(2);const details=document.createElement('div');details.className='muted';details.textContent='ID '+p.id+' · '+(p.activo?'Activo':'Inactivo')+' · Stock mostrado: '+(p.stock??0);const b=document.createElement('button');b.textContent='Agregar stock';b.onclick=()=>{selected=p;$('stockTitle').textContent='Stock para '+p.nombre;$('stockLines').value='';show('stockSection');$('stockSection').scrollIntoView({behavior:'smooth'})};row.append(title,details,b);box.append(row)}}
+$('productForm').onsubmit=async e=>{e.preventDefault();const btn=$('productForm').querySelector('button');btn.disabled=true;try{const name=$('pname').value.trim(),price=Number($('pprice').value);if(!name||!Number.isFinite(price)||price<0)throw Error('Revisa nombre y precio.');const {error}=await sb.from('productos').insert({tienda_id:shop.id,nombre:name,descripcion:$('pdesc').value.trim(),precio:price,stock:0,activo:true});if(error)throw error;msg('dashmsg','Producto guardado. El stock se administra por separado; las ventas automáticas todavía no están habilitadas.',true);$('productForm').reset();await loadProducts()}catch(err){msg('dashmsg',cleanError(err))}finally{btn.disabled=false}};
+
+async function loadPayments(){
+  if(!shop)return;
+  const {data,error}=await sb.from('configuracion_pagos').select('transferencia_activa,banco,beneficiario,clabe').eq('tienda_id',shop.id).maybeSingle();
+  if(error){msg('paymentmsg','No se pudo consultar la configuración: '+error.message);return}
+  $('transferEnabled').checked=!!data?.transferencia_activa;
+  $('bank').value=data?.banco||'';
+  $('beneficiary').value=data?.beneficiario||'';
+  $('clabe').value=data?.clabe||'';
+}
+$('paymentForm').onsubmit=async e=>{
+  e.preventDefault();
+  if(!shop){msg('paymentmsg','Inicia sesión primero.');return}
+  const btn=$('savePayment');btn.disabled=true;
+  try{
+    const enabled=$('transferEnabled').checked;
+    const bank=$('bank').value.trim();
+    const beneficiary=$('beneficiary').value.trim();
+    const clabe=$('clabe').value.replace(/\s/g,'');
+    if(enabled&&(!bank||!beneficiary||!/^\d{18}$/.test(clabe)))throw Error('Para activar transferencias, introduce banco, beneficiario y CLABE válida de 18 dígitos.');
+    if(clabe&&!/^\d{18}$/.test(clabe))throw Error('La CLABE debe tener exactamente 18 dígitos.');
+    const payload={tienda_id:shop.id,transferencia_activa:enabled,banco:bank||null,beneficiario:beneficiary||null,clabe:clabe||null,actualizado_en:new Date().toISOString()};
+    const {data:existing,error:readError}=await sb.from('configuracion_pagos').select('tienda_id').eq('tienda_id',shop.id).maybeSingle();
+    if(readError)throw readError;
+    let result;
+    if(existing){result=await sb.from('configuracion_pagos').update(payload).eq('tienda_id',shop.id).select('tienda_id').maybeSingle()}
+    else{result=await sb.from('configuracion_pagos').insert(payload).select('tienda_id').maybeSingle()}
+    if(result.error)throw result.error;
+    if(!result.data)throw Error('Supabase no confirmó el guardado. Revisa los permisos de la tienda.');
+    msg('paymentmsg','Configuración de transferencias guardada correctamente.',true);
+    await loadPayments();
+  }catch(e){msg('paymentmsg','No se pudo guardar: '+cleanError(e))}
+  finally{btn.disabled=false}
+};
+
+$('cancelStock').onclick=()=>show('stockSection',false);
+$('addStock').onclick=async()=>{if(!selected)return;const lines=$('stockLines').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);if(!lines.length){msg('stockmsg','Introduce al menos una unidad.');return}if(lines.length>100){msg('stockmsg','Carga máximo 100 unidades por operación.');return}busy('addStock',true);try{const {error}=await sb.from('inventario_digital').insert(lines.map(contenido=>({producto_id:selected.id,contenido,estado:'disponible'})));if(error)throw error;msg('stockmsg',lines.length+' unidades guardadas correctamente.',true);$('stockLines').value='';await loadProducts()}catch(e){msg('stockmsg',cleanError(e))}finally{busy('addStock',false)}};
+try{const saved=JSON.parse(localStorage.getItem('clandes_public_config')||'null');if(saved?.url&&saved?.key){$('url').value=saved.url;$('key').value=saved.key;start(saved.url,saved.key)}}catch(e){msg('configmsg',cleanError(e))}
+</script></body></html>
