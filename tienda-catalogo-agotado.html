@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Berry Digital | Exclusividad digital</title>
+<style>
+:root{color-scheme:dark;--gold:#d4af37}*{box-sizing:border-box}body{margin:0;background:#090909;color:#f8f3e8;font-family:system-ui,-apple-system,Segoe UI,sans-serif}.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:28px 20px;position:relative;isolation:isolate;background:linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,.83)),url('./IMG-20261014-WA0305.jpg') center/cover no-repeat}.hero:before{content:'';position:absolute;inset:0;border:1px solid rgba(212,175,55,.3);pointer-events:none}.tag{border:1px solid rgba(212,175,55,.6);border-radius:100px;padding:9px 17px;background:rgba(0,0,0,.65);font-size:.85rem;color:#f5d889;letter-spacing:.08em}h1{font-size:clamp(2.8rem,10vw,5.7rem);line-height:1.03;margin:24px 0 12px;color:#f2ce72;text-shadow:0 0 25px rgba(212,175,55,.45);letter-spacing:.025em}p{max-width:480px;color:#f1e5c9;font-size:1.08rem}.actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:25px}.btn{font:inherit;font-weight:750;border-radius:14px;padding:16px 24px;cursor:pointer;min-width:165px}.primary{background:linear-gradient(135deg,#f7d97c,#d4af37);border:0;color:#17110a}.secondary{background:rgba(0,0,0,.6);border:1px solid #d4af37;color:#f7e1a5}.note{font-size:.85rem;color:#c6b99e;margin-top:25px}.panel{display:none;max-width:400px;width:100%;padding:20px;background:rgba(12,11,9,.94);border:1px solid #a5873f;border-radius:18px;margin-top:18px}.panel.show{display:block}.panel h2{margin-top:0;color:#f2ce72}.panel input{width:100%;padding:13px;margin:6px 0;background:#1e1b16;border:1px solid #6c5933;border-radius:10px;color:#fff;font:inherit}.panel .btn{margin-top:12px;width:100%}.small{font-size:.8rem;color:#d4c6a8}
+
+.catalogo{background:#0c0b09;padding:60px 18px 85px;min-height:350px}.catalogo-inner{max-width:1060px;margin:auto}.catalogo h2{text-align:center;color:#f2ce72;font-size:clamp(1.8rem,5vw,2.7rem);margin:0 0 10px}.catalogo .sub{text-align:center;margin:0 auto 30px;color:#cdbd9c}.productos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}.producto{border:1px solid #6d572d;border-radius:17px;background:linear-gradient(145deg,#19160f,#0e0d0a);padding:22px;display:flex;flex-direction:column;gap:11px;min-height:235px}.producto h3{margin:0;color:#ffe29a;font-size:1.3rem;overflow-wrap:anywhere}.producto p{margin:0;font-size:.95rem;color:#cdbf9e;overflow-wrap:anywhere}.precio{font-size:1.5rem;font-weight:800;color:#f4d276}.estado{font-size:.78rem;font-weight:800;letter-spacing:.08em;border-radius:50px;padding:7px 11px;align-self:flex-start}.disponible{background:#143d29;color:#a8f5c2}.agotado{background:#4a2323;color:#ffd0d0}.comprar{width:100%;margin-top:auto;border-radius:12px;padding:13px;border:1px solid #806936;background:#29251b;color:#c9bfa5;font-weight:750;cursor:not-allowed}.catalogo-aviso{text-align:center;color:#c8b992;margin:25px auto 0;max-width:700px;font-size:.9rem}.catalogo-error{border:1px solid #9c5a43;border-radius:12px;padding:16px;color:#ffcebb;text-align:center}
+</style>
+</head>
+<body><main class="hero"><div class="tag">♛ TIENDA PREMIUM</div><h1>BERRY DIGITAL</h1><p>EXCLUSIVIDAD DIGITAL</p><div class="actions"><button class="btn primary" type="button" onclick="showPanel('registro')">Crear mi cuenta</button><button class="btn secondary" type="button" onclick="showPanel('acceso')">Ya tengo cuenta</button></div><section class="panel" id="registro"><h2>Crear cuenta</h2><p class="small">El registro de clientes estará disponible cuando configuremos autenticación y aprobación del administrador.</p><input placeholder="Nombre" disabled><input placeholder="Número" disabled><input placeholder="Correo" disabled><input placeholder="Contraseña" type="password" disabled><button class="btn primary" disabled>Próximamente</button></section><section class="panel" id="acceso"><h2>Iniciar sesión</h2><p class="small">El acceso se habilitará cuando conectemos Supabase Auth.</p><input placeholder="Correo" disabled><input placeholder="Contraseña" type="password" disabled><button class="btn primary" disabled>Próximamente</button></section><div class="note">Berry Digital · Tienda en preparación</div></main>
+<section class="catalogo" id="catalogo"><div class="catalogo-inner"><h2>♛ CATÁLOGO PREMIUM</h2><p class="sub">Descubre los productos de Berry Digital</p><div id="productos-grid" class="productos-grid" aria-live="polite"><p>Cargando productos...</p></div><p class="catalogo-aviso">Las compras en línea estarán disponibles cuando se habilite el sistema seguro de pedidos.</p></div></section>
+<script>function showPanel(id){for(const el of document.querySelectorAll('.panel'))el.classList.toggle('show',el.id===id)}</script>
+<script>
+// Solo clave pública anon/publishable; nunca service_role ni claves secretas.
+const SUPABASE_URL='https://sygstrvhaxjzmjveunpn.supabase.co';
+const SUPABASE_PUBLIC_KEY='REEMPLAZAR_CON_CLAVE_PUBLICA';
+const BERRY_TIENDA_ID='f336c8b8-da96-4ded-a1d1-98fd4c67a817';
+const grid=document.getElementById('productos-grid');
+const money=new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'});
+function element(tag,cls,value){const e=document.createElement(tag);if(cls)e.className=cls;if(value!==undefined)e.textContent=value;return e}
+function mensaje(t){grid.replaceChildren(element('p','catalogo-error',t))}
+async function cargarProductos(){
+ if(SUPABASE_PUBLIC_KEY==='REEMPLAZAR_CON_CLAVE_PUBLICA'){
+   mensaje('El catálogo está preparado, pero falta configurar la clave pública de Supabase.');return;
+ }
+ try{
+  const url=new URL(SUPABASE_URL+'/rest/v1/productos');
+  url.searchParams.set('select','id,nombre,descripcion,precio,stock,activo');
+  url.searchParams.set('tienda_id','eq.'+BERRY_TIENDA_ID);
+  url.searchParams.set('activo','eq.true');
+  url.searchParams.set('order','id.desc');
+  const r=await fetch(url,{headers:{apikey:SUPABASE_PUBLIC_KEY,Authorization:'Bearer '+SUPABASE_PUBLIC_KEY}});
+  if(!r.ok)throw Error('HTTP '+r.status);
+  const productos=await r.json();
+  grid.replaceChildren();
+  if(!Array.isArray(productos)||productos.length===0){grid.append(element('p','', 'Aún no hay productos publicados.'));return}
+  for(const p of productos){
+   const card=element('article','producto');
+   const stock=Math.max(0,Number(p.stock)||0);
+   card.append(element('h3','',p.nombre||'Producto'),element('p','',p.descripcion||'Producto digital'),element('div','precio',money.format(Number(p.precio)||0)));
+   card.append(element('span','estado '+(stock===0?'agotado':'disponible'),stock===0?'AGOTADO':stock===1?'ÚLTIMA UNIDAD':'DISPONIBLE'));
+   const boton=element('button','comprar',stock===0?'Sin existencias':'Compra próximamente');boton.type='button';boton.disabled=true;
+   card.append(boton);grid.append(card);
+  }
+ }catch(e){mensaje('No se pudo cargar el catálogo. Revisa la clave pública y los permisos de lectura.');console.error('Error al cargar productos:',e)}
+}
+cargarProductos();
+</script>
+</body>
+</html>
