@@ -104,5 +104,21 @@
   </main>
 
   <footer>© 2026 CLANDES.shop</footer>
+  
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const SUPABASE_URL = "https://sygstrvhaxjzmjveunpn.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_PJfMImWOdhsr3o_3_Y1jGA_OEDDR64b";
+
+  const db = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  .log("Supabase conectado a CLANDES.shop");
+</script>
+  
 </body>
 </html>
+console
