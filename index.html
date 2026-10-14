@@ -83,7 +83,7 @@
 
     <section id="catalogo">
       <h2>NUESTRO <span class="gold">CATÁLOGO</span></h2>
-      <div class="products">
+      <div class="products" id="lista-productos">
         <div class="card">
           <h3>♛ Streaming</h3>
           <p>Entretenimiento digital.</p>
@@ -114,11 +114,57 @@
   const db = supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
-  );
+  ); 
+async function cargarProductos() {
+  const contenedor = document.getElementById("lista-productos");
 
-  .log("Supabase conectado a CLANDES.shop");
+  const { data, error } = await db
+    .from("productos")
+    .select("id, nombre, descripcion, precio, stock")
+    .eq("activo", true);
+
+  if (error) {
+    console.error(error);
+    contenedor.textContent = "Error al cargar productos.";
+    return;
+  }
+
+  contenedor.replaceChildren();
+
+  if (data.length === 0) {
+    contenedor.textContent = "Próximamente nuevos productos.";
+    return;
+  }
+
+  data.forEach(producto => {
+    const tarjeta = document.createElement("div");
+    tarjeta.className = "card";
+
+    const nombre = document.createElement("h3");
+    nombre.textContent = "♛ " + producto.nombre;
+
+    const descripcion = document.createElement("p");
+    descripcion.textContent = producto.descripcion || "";
+
+    const precio = document.createElement("p");
+    precio.textContent = "$" + Number(producto.precio).toFixed(2) + " MXN";
+
+    const disponibilidad = document.createElement("p");
+    disponibilidad.textContent = producto.stock > 0
+      ? "🟢 Disponible"
+      : "🔴 Agotado";
+
+    tarjeta.append(nombre, descripcion, precio, disponibilidad);
+    contenedor.appendChild(tarjeta);
+  });
+}
+
+cargarProductos();
+  
+  
+
+  console.log("Supabase conectado a CLANDES.shop");
 </script>
   
 </body>
 </html>
-console
