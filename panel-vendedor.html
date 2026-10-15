@@ -11,7 +11,29 @@
 <section id="config"><h2>1. Conexión inicial</h2><p class="muted">Configura la URL y la clave pública (anon/publishable) de Supabase. Nunca uses la clave secreta o service_role. Se guardan únicamente en este navegador.</p><label>URL del proyecto</label><input id="url" placeholder="https://xxxxx.supabase.co" value="https://sygstrvhaxjzmjveunpn.supabase.co"><label>Clave pública (anon / publishable)</label><input id="key" type="text" autocomplete="off" placeholder="sb_publishable_... o eyJ..."><button id="connect">Conectar</button><div id="configmsg" class="notice hidden"></div></section>
 <section id="login" class="hidden"><h2>2. Iniciar sesión</h2><p class="muted">Usa el correo y contraseña de Supabase Auth vinculados a tu tienda.</p><label>Correo electrónico</label><input id="email" type="email" autocomplete="username"><label>Contraseña</label><input id="password" type="password" autocomplete="current-password"><button id="signin">Entrar al panel</button><button id="changeConfig" class="secondary">Cambiar conexión</button><div id="loginmsg" class="notice hidden"></div></section>
 <div id="dashboard" class="hidden"><section><div class="flex"><div><h2 id="shopName">Mi tienda</h2><div class="muted" id="shopUser"></div></div><button id="logout" class="secondary">Cerrar sesión</button></div><div id="dashmsg" class="notice hidden"></div></section>
-<section><h2>Agregar producto</h2><form id="productForm"><label>Nombre</label><input id="pname" required maxlength="140"><label>Descripción</label><textarea id="pdesc"></textarea><label>Precio (MXN)</label><input id="pprice" type="number" min="0" step="0.01" required><button type="submit">Guardar producto</button></form></section>
+
+<section id="designSection">
+  <h2>⚡ Diseño de mi tienda</h2>
+  <p class="muted">
+    Elige cómo verán tus clientes tu tienda.
+  </p>
+
+  <label for="shopTemplate">Plantilla</label>
+  <select id="shopTemplate">
+    <option value="neon-tech">⚡ Neon Tech</option>
+    <option value="gaming">🎮 Gaming</option>
+    <option value="luxury">👑 Luxury</option>
+    <option value="cinematica">🎬 Cinemática</option>
+  </select>
+
+  <button id="saveTemplate" type="button">
+    Guardar diseño
+  </button>
+
+  <div id="templateMsg" class="notice hidden"></div>
+</section>
+  
+  <section><h2>Agregar producto</h2><form id="productForm"><label>Nombre</label><input id="pname" required maxlength="140"><label>Descripción</label><textarea id="pdesc"></textarea><label>Precio (MXN)</label><input id="pprice" type="number" min="0" step="0.01" required><button type="submit">Guardar producto</button></form></section>
 <section><h2>Mis productos</h2><p class="muted">Agrega stock o activa y desactiva tus productos. Cada línea del cuadro se guardará como una unidad independiente. Usa solo códigos o licencias que estés autorizado a distribuir.</p><div id="products">Cargando...</div></section>
 <section id="stockSection" class="hidden"><h2 id="stockTitle">Cargar stock</h2><p class="muted">Una unidad por línea. No pegues credenciales personales ni datos sensibles de terceros.</p><textarea id="stockLines" placeholder="CODIGO-001&#10;CODIGO-002"></textarea><button id="addStock">Agregar unidades</button><button id="cancelStock" class="secondary">Cancelar</button><div id="stockmsg" class="notice hidden"></div></section></div>
 </main>
