@@ -3,7 +3,31 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Berry Digital | Neon Tech</title>
-<style>
+<style>/* Video de fondo del catálogo */
+.catalog {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.catalog::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .55);
+  z-index: -1;
+}
+
+#backgroundVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: .35;
+  pointer-events: none;
+  z-index: -2;
+}
 :root{color-scheme:dark;--neon:#a76cff;--cyan:#53e5ff}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#070713;color:#f7f5ff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}button,a{font:inherit}.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:28px 20px;position:relative;isolation:isolate;background:linear-gradient(180deg,rgba(5,5,20,.5),rgba(5,5,20,.92)),url('./IMG-20261014-WA0305.jpg') center/cover no-repeat}.hero:before{content:'';position:absolute;inset:0;border:1px solid #a76cff55;pointer-events:none}.tag{border:1px solid #a76cffaa;border-radius:100px;padding:9px 17px;background:#08091ccc;color:#d4b8ff;letter-spacing:.08em;font-size:.85rem}h1{font-size:clamp(2.8rem,10vw,5.7rem);line-height:1.03;margin:24px 0 12px;color:#f3e8ff;text-shadow:0 0 25px #9c4dffbb;letter-spacing:.025em}.hero p{max-width:480px;color:#d7d1f4;font-size:1.08rem}.actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:25px}.btn{font-weight:750;border-radius:14px;padding:16px 24px;cursor:pointer;min-width:165px}.primary{background:linear-gradient(135deg,#9a68ff,#50d9ff);border:0;color:#08071a}.secondary{background:#080a1ecc;border:1px solid #9967ff;color:#e6d6ff}.note{font-size:.85rem;color:#b9b0d5;margin-top:25px}.panel{display:none;max-width:400px;width:100%;padding:20px;background:#0c0b1aee;border:1px solid #7953b0;border-radius:18px;margin-top:18px}.panel.show{display:block}.panel h2{margin-top:0;color:#d4b6ff}.panel input{width:100%;padding:13px;margin:6px 0;background:#1c1930;border:1px solid #6b508b;border-radius:10px;color:#fff;font:inherit}.panel .btn{margin-top:12px;width:100%}.small{font-size:.8rem;color:#bcb4d3}
 .catalog{position:relative;isolation:isolate;min-height:75vh;padding:65px 18px 100px;overflow:hidden;background:radial-gradient(circle at 20% 20%,#2c125b 0,transparent 50%),#080918}.catalog>.background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:.35}.catalog:before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#070713 0%,#08081899 30%,#070713 100%);pointer-events:none}.inner{max-width:1100px;margin:auto}.section-title{text-align:center;font-size:clamp(1.8rem,6vw,3rem);margin:0;color:#f3e7ff;text-shadow:0 0 24px #8558ff}.subtitle{text-align:center;color:#c1b7df;margin:10px 0 35px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}.product{overflow:hidden;border-radius:20px;border:1px solid #a36cff77;background:#111027dd;box-shadow:0 12px 35px #0009,0 0 24px #7b46e533;backdrop-filter:blur(14px)}.media{position:relative;aspect-ratio:4/5;background:linear-gradient(135deg,#23164c,#0d3c58);overflow:hidden}.media img,.media video{width:100%;height:100%;object-fit:cover;display:block}.placeholder{height:100%;display:grid;place-items:center;text-align:center;color:#a7a0d6;font-size:3rem}.placeholder small{font-size:.8rem;display:block}.info{padding:18px}.info h3{margin:0 0 8px}.description{color:#c6c0dc;font-size:.9rem;min-height:38px;overflow-wrap:anywhere}.price{color:#66e7ff;font-weight:800;font-size:1.35rem;margin:10px 0}.status{font-size:.8rem;color:#c5a6ff}.empty{text-align:center;color:#d3c5f5;padding:25px;border:1px dashed #9c6cf0;border-radius:14px}.shop-link{display:inline-block;margin-top:12px;color:#70e4ff;text-decoration:none;font-weight:700}.shop-link:hover{text-decoration:underline}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
