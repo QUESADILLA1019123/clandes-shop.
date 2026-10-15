@@ -26,6 +26,32 @@
     <option value="cinematica">🎬 Cinemática</option>
   </select>
 
+
+<label for="shopColor">🎨 Color de mi tienda</label>
+<select id="shopColor"></select>
+
+<label for="shopBackground">🎬 Fondo del catálogo</label>
+<select id="shopBackground">
+  <option value="imagen">Imagen</option>
+  <option value="video">Video</option>
+</select>
+
+<label for="backgroundUrl">
+  Dirección HTTPS de la imagen o video
+</label>
+<input
+  id="backgroundUrl"
+  type="url"
+  placeholder="https://ejemplo.com/fondo.mp4"
+>
+
+<div id="designPreview"
+     style="margin-top:16px;padding:28px;
+     border-radius:14px;text-align:center">
+  <strong>👑 VISTA PREVIA</strong>
+  <p>Así se verá el estilo de tu tienda</p>
+</div>
+  
   <button id="saveTemplate" type="button">
     Guardar diseño
   </button>
@@ -54,7 +80,58 @@ async function checkSession(){const {data:{user},error}=await sb.auth.getUser();
 async function loadProducts(){const {data,error}=await sb.from('productos').select('id,nombre,descripcion,precio,stock,activo').eq('tienda_id',shop.id).order('id',{ascending:false});if(error){msg('dashmsg','Error al cargar productos: '+error.message);return}const box=$('products');box.replaceChildren();if(!data.length){box.textContent='Todavía no tienes productos.';return}for(const p of data){const row=document.createElement('div');row.className='product';const title=document.createElement('strong');title.textContent=p.nombre+' — $'+Number(p.precio).toFixed(2);const details=document.createElement('div');details.className='muted';details.textContent='ID '+p.id+' · '+(p.activo?'Activo':'Inactivo')+' · Stock mostrado: '+(p.stock??0);const b=document.createElement('button');b.textContent='Agregar stock';b.onclick=()=>{selected=p;$('stockTitle').textContent='Stock para '+p.nombre;$('stockLines').value='';show('stockSection');$('stockSection').scrollIntoView({behavior:'smooth'})};const toggle=document.createElement('button');toggle.className='secondary';toggle.textContent=p.activo?'Desactivar producto':'Activar producto';toggle.onclick=async()=>{if(!p.activo&&Number(p.stock||0)<1){msg('dashmsg','Primero agrega al menos una unidad de stock antes de activar este producto.');return}const accion=p.activo?'desactivar':'activar';if(!confirm('¿Quieres '+accion+' «'+p.nombre+'»?'))return;busy(toggle,true);try{const {data:updated,error}=await sb.from('productos').update({activo:!p.activo}).eq('id',p.id).eq('tienda_id',shop.id).select('id,activo');if(error)throw error;if(!updated?.length)throw Error('No se confirmó la actualización. Comprueba los permisos de la tienda.');msg('dashmsg','Producto «'+p.nombre+'» '+(updated[0].activo?'activado':'desactivado')+' correctamente.',true);await loadProducts()}catch(e){msg('dashmsg','No se pudo cambiar el estado: '+cleanError(e))}finally{busy(toggle,false)}};row.append(title,details,b,toggle);box.append(row)}}
 $('productForm').onsubmit=async e=>{e.preventDefault();const btn=$('productForm').querySelector('button');btn.disabled=true;try{const name=$('pname').value.trim(),price=Number($('pprice').value);if(!name||!Number.isFinite(price)||price<0)throw Error('Revisa nombre y precio.');const {error}=await sb.from('productos').insert({tienda_id:shop.id,nombre:name,descripcion:$('pdesc').value.trim(),precio:price,stock:0,activo:false});if(error)throw error;msg('dashmsg','Producto guardado como inactivo. Puedes activarlo cuando tenga stock. Las ventas automáticas todavía no están habilitadas.',true);$('productForm').reset();await loadProducts()}catch(err){msg('dashmsg',cleanError(err))}finally{btn.disabled=false}};
 
-$('saveTemplate').onclick = async () => {
+
+const shopColors = [
+  ['Dorado', '#D4AF37'],
+  ['Morado', '#9B59B6'],
+  ['Azul', '#2980B9'],
+  ['Rojo', '#C0392B'],
+  ['Verde militar', '#9DAE67'],
+  ['Esmeralda', '#2ECC71'],
+  ['Turquesa', '#1ABC9C'],
+  ['Cian', '#00BCD4'],
+  ['Azul eléctrico', '#2563EB'],
+  ['Azul marino', '#1E3A8A'],
+  ['Violeta', '#7C3AED'],
+  ['Lavanda', '#B794F4'],
+  ['Rosa neón', '#EC4899'],
+  ['Fucsia', '#D946EF'],
+  ['Naranja', '#F97316'],
+  ['Ámbar', '#F59E0B'],
+  ['Amarillo', '#FACC15'],
+  ['Cobre', '#B87333'],
+  ['Bronce', '#CD7F32'],
+  ['Plata', '#C0C0C0'],
+  ['Blanco hielo', '#E0F2FE'],
+  ['Gris titanio', '#64748B'],
+  ['Negro carbón', '#27272A'],
+  ['Verde lima', '#84CC16']
+];
+
+for (const [name, color] of shopColors) {
+  const option = document.createElement('option');
+  option.value = color;
+  option.textContent = name + ' · ' + color;
+  $('shopColor').append(option);
+}
+
+function updateDesignPreview() {
+  const color = $('shopColor').value;
+  const preview = $('designPreview');
+
+  preview.style.border = '2px solid ' + color;
+  preview.style.background =
+    'linear-gradient(135deg, #090909, #202020)';
+  preview.style.color = color;
+}
+
+$('shopColor').addEventListener(
+  'change', updateDesignPreview
+);
+
+updateDesignPreview();
+  
+  $('saveTemplate').onclick = async () => {
   if (!sb || !shop) return;
 
   const btn = $('saveTemplate');
