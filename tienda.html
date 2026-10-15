@@ -1,54 +1,71 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Berry Digital | Neon Tech</title>
-<style>/* Video de fondo del catálogo */
-.catalog {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-}
-
-.catalog::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, .55);
-  z-index: -1;
-}
-
-#backgroundVideo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: .35;
-  pointer-events: none;
-  z-index: -2;
-}
-:root{color-scheme:dark;--neon:#a76cff;--cyan:#53e5ff}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#070713;color:#f7f5ff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}button,a{font:inherit}.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:28px 20px;position:relative;isolation:isolate;background:linear-gradient(180deg,rgba(5,5,20,.5),rgba(5,5,20,.92)),url('./IMG-20261014-WA0305.jpg') center/cover no-repeat}.hero:before{content:'';position:absolute;inset:0;border:1px solid #a76cff55;pointer-events:none}.tag{border:1px solid #a76cffaa;border-radius:100px;padding:9px 17px;background:#08091ccc;color:#d4b8ff;letter-spacing:.08em;font-size:.85rem}h1{font-size:clamp(2.8rem,10vw,5.7rem);line-height:1.03;margin:24px 0 12px;color:#f3e8ff;text-shadow:0 0 25px #9c4dffbb;letter-spacing:.025em}.hero p{max-width:480px;color:#d7d1f4;font-size:1.08rem}.actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:25px}.btn{font-weight:750;border-radius:14px;padding:16px 24px;cursor:pointer;min-width:165px}.primary{background:linear-gradient(135deg,#9a68ff,#50d9ff);border:0;color:#08071a}.secondary{background:#080a1ecc;border:1px solid #9967ff;color:#e6d6ff}.note{font-size:.85rem;color:#b9b0d5;margin-top:25px}.panel{display:none;max-width:400px;width:100%;padding:20px;background:#0c0b1aee;border:1px solid #7953b0;border-radius:18px;margin-top:18px}.panel.show{display:block}.panel h2{margin-top:0;color:#d4b6ff}.panel input{width:100%;padding:13px;margin:6px 0;background:#1c1930;border:1px solid #6b508b;border-radius:10px;color:#fff;font:inherit}.panel .btn{margin-top:12px;width:100%}.small{font-size:.8rem;color:#bcb4d3}
-.catalog{position:relative;isolation:isolate;min-height:75vh;padding:65px 18px 100px;overflow:hidden;background:radial-gradient(circle at 20% 20%,#2c125b 0,transparent 50%),#080918}.catalog>.background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:.35}.catalog:before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#070713 0%,#08081899 30%,#070713 100%);pointer-events:none}.inner{max-width:1100px;margin:auto}.section-title{text-align:center;font-size:clamp(1.8rem,6vw,3rem);margin:0;color:#f3e7ff;text-shadow:0 0 24px #8558ff}.subtitle{text-align:center;color:#c1b7df;margin:10px 0 35px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}.product{overflow:hidden;border-radius:20px;border:1px solid #a36cff77;background:#111027dd;box-shadow:0 12px 35px #0009,0 0 24px #7b46e533;backdrop-filter:blur(14px)}.media{position:relative;aspect-ratio:4/5;background:linear-gradient(135deg,#23164c,#0d3c58);overflow:hidden}.media img,.media video{width:100%;height:100%;object-fit:cover;display:block}.placeholder{height:100%;display:grid;place-items:center;text-align:center;color:#a7a0d6;font-size:3rem}.placeholder small{font-size:.8rem;display:block}.info{padding:18px}.info h3{margin:0 0 8px}.description{color:#c6c0dc;font-size:.9rem;min-height:38px;overflow-wrap:anywhere}.price{color:#66e7ff;font-weight:800;font-size:1.35rem;margin:10px 0}.status{font-size:.8rem;color:#c5a6ff}.empty{text-align:center;color:#d3c5f5;padding:25px;border:1px dashed #9c6cf0;border-radius:14px}.shop-link{display:inline-block;margin-top:12px;color:#70e4ff;text-decoration:none;font-weight:700}.shop-link:hover{text-decoration:underline}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080817">
+<title>Berry Digital | CLANDES PREMIUM</title>
+<style>
+:root{color-scheme:dark;--neon:#a76cff;--cyan:#53e5ff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#070713;color:#f7f5ff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}button,a{font:inherit}
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:28px 20px;position:relative;isolation:isolate;background:linear-gradient(180deg,rgba(5,5,20,.5),rgba(5,5,20,.92)),url('./IMG-20261014-WA0305.jpg') center/cover no-repeat}
+.hero:before{content:'';position:absolute;inset:0;border:1px solid #a76cff55;pointer-events:none}.tag{border:1px solid #a76cffaa;border-radius:100px;padding:9px 17px;background:#08091ccc;color:#d4b8ff;letter-spacing:.08em;font-size:.85rem}
+h1{font-size:clamp(2.8rem,10vw,5.7rem);line-height:1.03;margin:24px 0 12px;color:#f3e8ff;text-shadow:0 0 25px #9c4dffbb;letter-spacing:.025em}.hero p{max-width:480px;color:#d7d1f4;font-size:1.08rem}.actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:25px}.btn{display:inline-block;text-decoration:none;font-weight:750;border-radius:14px;padding:16px 24px;cursor:pointer;min-width:165px}.primary{background:linear-gradient(135deg,#9a68ff,#50d9ff);border:0;color:#08071a}.secondary{background:#080a1ecc;border:1px solid #9967ff;color:#e6d6ff}.note{font-size:.85rem;color:#b9b0d5;margin-top:25px}.panel{display:none;max-width:400px;width:100%;padding:20px;background:#0c0b1aee;border:1px solid #7953b0;border-radius:18px;margin-top:18px}.panel.show{display:block}.panel h2{margin-top:0;color:#d4b6ff}.panel input{width:100%;padding:13px;margin:6px 0;background:#1c1930;border:1px solid #6b508b;border-radius:10px;color:#fff;font:inherit}.panel .btn{margin-top:12px;width:100%}.small{font-size:.8rem;color:#bcb4d3}
+.catalog{position:relative;isolation:isolate;min-height:75vh;padding:65px 18px 100px;overflow:hidden;background:radial-gradient(circle at 20% 20%,#2c125b 0,transparent 50%),#080918}
+.catalog>.background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:.5;pointer-events:none}.catalog:before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(7,7,19,.9),rgba(8,8,24,.5) 30%,rgba(7,7,19,.94));pointer-events:none}
+.inner{max-width:1100px;margin:auto}.section-title{text-align:center;font-size:clamp(1.8rem,6vw,3rem);margin:0;color:#f3e7ff;text-shadow:0 0 24px #8558ff}.subtitle{text-align:center;color:#c1b7df;margin:10px 0 35px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:20px}.product{overflow:hidden;border-radius:20px;border:1px solid #a36cff77;background:#111027dd;box-shadow:0 12px 35px #0009,0 0 24px #7b46e533;backdrop-filter:blur(14px)}.media{position:relative;aspect-ratio:4/5;background:linear-gradient(135deg,#23164c,#0d3c58);overflow:hidden}.media img,.media video{width:100%;height:100%;object-fit:cover;display:block}.placeholder{height:100%;display:grid;place-items:center;text-align:center;color:#e2c7ff;font-size:3rem;background:radial-gradient(circle at 50% 40%,#6b3dba55,transparent 70%)}.info{padding:18px}.info h3{margin:0 0 8px}.description{color:#c6c0dc;font-size:.9rem;min-height:38px;overflow-wrap:anywhere}.price{color:#66e7ff;font-weight:800;font-size:1.35rem;margin:10px 0}.status{font-size:.8rem;color:#c5a6ff}.empty{text-align:center;color:#d3c5f5;padding:25px;border:1px dashed #9c6cf0;border-radius:14px}.video-label{position:absolute;top:12px;right:12px;padding:5px 9px;border-radius:30px;background:#0b0823b8;color:#fff;font-size:.72rem}
+@media(min-width:700px){.grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-<main class="hero"><div class="tag">⚡ TIENDA NEON TECH</div><h1>BERRY DIGITAL</h1><p>EXCLUSIVIDAD DIGITAL</p><div class="actions"><a class="btn primary" href="#productos" style="text-decoration:none">Ver productos</a><button class="btn secondary" type="button" onclick="showPanel('acceso')">Ya tengo cuenta</button><button class="btn secondary" type="button" onclick="showPanel('registro')">Crear mi cuenta</button></div><section class="panel" id="registro"><h2>Crear cuenta</h2><p class="small">El registro estará disponible cuando configuremos autenticación y aprobación del administrador.</p><input placeholder="Nombre" disabled><input placeholder="Número" disabled><input placeholder="Correo" disabled><input placeholder="Contraseña" type="password" disabled><button class="btn primary" disabled>Próximamente</button></section><section class="panel" id="acceso"><h2>Iniciar sesión</h2><p class="small">El acceso se habilitará cuando conectemos Supabase Auth.</p><input placeholder="Correo" disabled><input placeholder="Contraseña" type="password" disabled><button class="btn primary" disabled>Próximamente</button></section><div class="note">Berry Digital · CLANDES PREMIUM</div></main>
-<section class="catalog" id="productos"><video id="backgroundVideo" class="background" autoplay muted loop playsinline preload="none" hidden></video><div class="inner"><h2 class="section-title">⚡ NUESTROS PRODUCTOS</h2><p class="subtitle">Explora nuestro catálogo digital</p><div class="grid" id="productGrid"><div class="empty">Cargando productos...</div></div><p id="catalogMessage" class="small" style="text-align:center"></p></div></section>
+<main class="hero"><div class="tag">⚡ TIENDA NEON TECH</div><h1 id="shopTitle">BERRY DIGITAL</h1><p>EXCLUSIVIDAD DIGITAL</p><div class="actions"><a class="btn primary" href="#productos">Ver productos</a><button class="btn secondary" type="button" data-panel="acceso">Ya tengo cuenta</button><button class="btn secondary" type="button" data-panel="registro">Crear mi cuenta</button></div><section class="panel" id="registro"><h2>Crear cuenta</h2><p class="small">El registro estará disponible cuando configuremos autenticación y aprobación del administrador.</p><input placeholder="Nombre" disabled><input placeholder="Número" disabled><input placeholder="Correo" disabled><input placeholder="Contraseña" type="password" disabled><button class="btn primary" disabled>Próximamente</button></section><section class="panel" id="acceso"><h2>Iniciar sesión</h2><p class="small">El acceso se habilitará cuando conectemos Supabase Auth.</p><input placeholder="Correo" disabled><input placeholder="Contraseña" type="password" disabled><button class="btn primary" disabled>Próximamente</button></section><div class="note">Berry Digital · CLANDES PREMIUM</div></main>
+<section class="catalog" id="productos"><video id="backgroundVideo" class="background" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video><div class="inner"><h2 class="section-title">⚡ NUESTROS PRODUCTOS</h2><p class="subtitle">Explora nuestro catálogo digital</p><div class="grid" id="productGrid"><div class="empty">Cargando productos...</div></div><p id="catalogMessage" class="small" style="text-align:center" role="status"></p></div></section>
 <script type="module">
 import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 const PROJECT_URL='https://sygstrvhaxjzmjveunpn.supabase.co';
-// Pega aquí SOLAMENTE la clave pública anon/publishable del proyecto.
 const PUBLIC_ANON_KEY='sb_publishable_PJfMImWOdhsr3o_3_Y1jGA_OEDDR64b';
 const SHOP_USER='berrydigital';
-function showPanel(id){for(const el of document.querySelectorAll('.panel'))el.classList.toggle('show',el.id===id)}
-window.showPanel=showPanel;
+// Video de demostración del bucket R2 público; cada tienda puede reemplazarlo desde Supabase.
+const DEMO_BACKGROUND_VIDEO='https://pub-3d89db5e857d44fd9ca713366c7cfc2a.r2.dev/WA_1792046547653.mp4';
 const grid=document.getElementById('productGrid');
-function mediaURL(value){if(!value)return null;try{const u=new URL(value);return u.protocol==='https:'?u.href:null}catch{return null}}
-function makeProduct(p){const card=document.createElement('article');card.className='product';const media=document.createElement('div');media.className='media';const videoURL=mediaURL(p.video_url),imageURL=mediaURL(p.imagen_url);if(p.tipo_media==='video'&&videoURL){const v=document.createElement('video');v.src=videoURL;v.muted=true;v.loop=true;v.autoplay=true;v.playsInline=true;v.preload='none';v.poster=imageURL||'';media.append(v);observeVideo(v)}else if(imageURL){const img=document.createElement('img');img.src=imageURL;img.alt=p.nombre||'Producto';img.loading='lazy';media.append(img)}else{const ph=document.createElement('div');ph.className='placeholder';ph.textContent='⚡';media.append(ph)}const info=document.createElement('div');info.className='info';const title=document.createElement('h3');title.textContent=p.nombre||'Producto';const desc=document.createElement('p');desc.className='description';desc.textContent=p.descripcion||'Producto digital';const price=document.createElement('div');price.className='price';price.textContent='$'+Number(p.precio||0).toFixed(2)+' MXN';const status=document.createElement('div');status.className='status';status.textContent='Consulta disponibilidad con la tienda';info.append(title,desc,price,status);card.append(media,info);return card}
+const bg=document.getElementById('backgroundVideo');
+for(const btn of document.querySelectorAll('[data-panel]'))btn.addEventListener('click',()=>{for(const panel of document.querySelectorAll('.panel'))panel.classList.toggle('show',panel.id===btn.dataset.panel)});
+function mediaURL(value){if(typeof value!=='string'||!value.trim())return null;try{const u=new URL(value.trim());return u.protocol==='https:'?u.href:null}catch{return null}}
 const observer=('IntersectionObserver' in window)?new IntersectionObserver(entries=>{for(const e of entries){const v=e.target;if(e.isIntersecting){v.play().catch(()=>{})}else{v.pause()}}},{rootMargin:'150px'}):null;
 function observeVideo(v){if(observer)observer.observe(v);else v.play().catch(()=>{})}
-async function init(){if(PUBLIC_ANON_KEY==='PEGA_AQUI_TU_CLAVE_PUBLICA'){grid.replaceChildren();const e=document.createElement('div');e.className='empty';e.textContent='Catálogo pendiente de conectar: agrega la clave pública de Supabase en tienda.html.';grid.append(e);return}try{const sb=createClient(PROJECT_URL,PUBLIC_ANON_KEY);const {data:shops,error:shopError}=await sb.from('tiendas').select('id,nombre,estado,plantilla,video_fondo_url').eq('usuario',SHOP_USER).eq('estado','activa').limit(1);if(shopError)throw shopError;if(!shops?.length){grid.textContent='Tienda no disponible.';return}const shop=shops[0];document.querySelector('h1').textContent=shop.nombre||'BERRY DIGITAL';document.title=(shop.nombre||'Tienda')+' | CLANDES PREMIUM';const bgURL=mediaURL(shop.video_fondo_url);if(bgURL){const bg=document.getElementById('backgroundVideo');bg.src=bgURL;bg.hidden=false;observeVideo(bg)}const {data,error}=await sb.from('productos').select('id,nombre,descripcion,precio,imagen_url,video_url,tipo_media').eq('tienda_id',shop.id).eq('activo',true).order('id',{ascending:false});if(error)throw error;grid.replaceChildren();if(!data?.length){const e=document.createElement('div');e.className='empty';e.textContent='Próximamente habrá productos disponibles.';grid.append(e);return}for(const p of data)grid.append(makeProduct(p))}catch(err){grid.replaceChildren();const e=document.createElement('div');e.className='empty';e.textContent='No se pudo cargar el catálogo. Revisa la conexión y los permisos públicos de Supabase.';grid.append(e);console.error(err)}}
+function setBackground(url){const safe=mediaURL(url);if(!safe)return;bg.src=safe;bg.load();observeVideo(bg)}
+function makeProduct(p){
+ const card=document.createElement('article');card.className='product';
+ const media=document.createElement('div');media.className='media';
+ const videoURL=mediaURL(p.video_url),imageURL=mediaURL(p.imagen_url);
+ if(videoURL&&(p.tipo_media==='video'||!imageURL)){
+  const v=document.createElement('video');v.src=videoURL;v.muted=true;v.loop=true;v.autoplay=true;v.playsInline=true;v.preload='metadata';if(imageURL)v.poster=imageURL;v.setAttribute('aria-label','Video de '+(p.nombre||'producto'));media.append(v);observeVideo(v);
+  const label=document.createElement('span');label.className='video-label';label.textContent='▶ Video';media.append(label);
+ }else if(imageURL){const img=document.createElement('img');img.src=imageURL;img.alt=p.nombre||'Producto';img.loading='lazy';img.decoding='async';media.append(img)}
+ else{const ph=document.createElement('div');ph.className='placeholder';ph.textContent='⚡';media.append(ph)}
+ const info=document.createElement('div');info.className='info';
+ const title=document.createElement('h3');title.textContent=p.nombre||'Producto';
+ const desc=document.createElement('p');desc.className='description';desc.textContent=p.descripcion||'Producto digital';
+ const price=document.createElement('div');price.className='price';price.textContent='$'+Number(p.precio||0).toFixed(2)+' MXN';
+ const status=document.createElement('div');status.className='status';status.textContent='Consulta disponibilidad con la tienda';
+ info.append(title,desc,price,status);card.append(media,info);return card;
+}
+async function init(){
+ // El fondo de demostración se muestra aun si falla la conexión con Supabase.
+ setBackground(DEMO_BACKGROUND_VIDEO);
+ try{
+  const sb=createClient(PROJECT_URL,PUBLIC_ANON_KEY);
+  const {data:shops,error:shopError}=await sb.from('tiendas').select('id,nombre,estado,plantilla,video_fondo_url').eq('usuario',SHOP_USER).eq('estado','activa').limit(1);
+  if(shopError)throw shopError;
+  if(!shops?.length){grid.innerHTML='<div class="empty">Tienda no disponible.</div>';return}
+  const shop=shops[0];document.getElementById('shopTitle').textContent=shop.nombre||'BERRY DIGITAL';document.title=(shop.nombre||'Tienda')+' | CLANDES PREMIUM';
+  if(mediaURL(shop.video_fondo_url))setBackground(shop.video_fondo_url);
+  const {data,error}=await sb.from('productos').select('id,nombre,descripcion,precio,imagen_url,video_url,tipo_media').eq('tienda_id',shop.id).eq('activo',true).order('id',{ascending:false});
+  if(error)throw error;grid.replaceChildren();
+  if(!data?.length){const e=document.createElement('div');e.className='empty';e.textContent='Próximamente habrá productos disponibles.';grid.append(e);return}
+  for(const p of data)grid.append(makeProduct(p));
+ }catch(err){console.error('Error al cargar catálogo:',err);grid.replaceChildren();const e=document.createElement('div');e.className='empty';e.textContent='No se pudo cargar el catálogo. Revisa la conexión y los permisos públicos de Supabase.';grid.append(e)}
+}
 init();
 </script>
 </body>
