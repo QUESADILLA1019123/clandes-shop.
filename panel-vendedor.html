@@ -1,33 +1,465 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Panel vendedor | CLANDES PREMIUM</title><link rel="stylesheet" href="assets/styles.css">
-<style>
-:root{color-scheme:dark;--accent:#d4af37;--gold:#e9c56e;--line:rgba(227,185,91,.23);--muted:#a99e8d}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(ellipse 80% 35% at 50% -10%,rgba(181,126,27,.23),transparent 75%),radial-gradient(circle at 100% 55%,rgba(137,87,16,.07),transparent 40%),#08090b;color:#f7f1e7;font:15px/1.6 system-ui,-apple-system,Segoe UI,Arial,sans-serif}body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.15;background-image:linear-gradient(rgba(245,202,109,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(245,202,109,.06) 1px,transparent 1px);background-size:46px 46px}header{position:relative;background:linear-gradient(100deg,rgba(24,20,13,.98),rgba(9,10,12,.97));border-bottom:1px solid var(--line);box-shadow:0 12px 40px #0009}header .wrap{max-width:1100px;margin:auto;padding:23px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}header h1{margin:0;font-size:clamp(1.3rem,4vw,1.85rem);letter-spacing:2px;font-weight:900;background:linear-gradient(120deg,#fff5cd,#d6a738 45%,#fff2b8 70%,#a87719);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 35px #c8992430}header .muted{font-size:.8rem;letter-spacing:1px;text-transform:uppercase}main{position:relative;max-width:1100px;margin:0 auto;padding:26px 16px 70px}.panel{position:relative;margin:0 0 20px;padding:clamp(20px,4vw,32px);border:1px solid var(--line);border-radius:20px;background:linear-gradient(135deg,rgba(28,25,21,.97),rgba(14,15,18,.98) 65%);box-shadow:0 18px 50px #0007,inset 0 1px 0 #ffe5a511;overflow:hidden}.panel:before{content:"";position:absolute;top:0;left:24px;right:24px;height:1px;background:linear-gradient(90deg,transparent,#ffe7a375,transparent)}h2{margin:0 0 12px;font-size:clamp(1.2rem,3.5vw,1.5rem);line-height:1.3;color:#f5d589;letter-spacing:.3px}h3{color:#f0d392}p{margin:8px 0 14px}.muted{color:var(--muted)}label{display:block;margin:16px 0 7px;color:#e8d9bb;font-size:.9rem;font-weight:650}input,textarea,select{display:block;width:100%;min-width:0;padding:13px 14px;border-radius:11px;border:1px solid #6c583a;background:linear-gradient(135deg,#0b0d10,#111318);color:#fff;font:inherit;outline:none;transition:border-color .2s,box-shadow .2s}input:focus,textarea:focus,select:focus{border-color:#e7bc58;box-shadow:0 0 0 3px #d9ac3330}textarea{min-height:105px;resize:vertical}button,.button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:43px;padding:11px 19px;margin:14px 8px 0 0;border:1px solid #f6da8a66;border-radius:11px;background:linear-gradient(115deg,#a97822,#f2cf71 45%,#bd8b31);box-shadow:inset 0 1px 0 #fff8,0 5px 18px #b1842930;color:#211708;font:800 .92rem system-ui,Arial;cursor:pointer;text-decoration:none;transition:transform .18s,filter .18s}button:hover,.button:hover{transform:translateY(-2px);filter:brightness(1.08)}button:active,.button:active{transform:translateY(0)}button:disabled{opacity:.55;cursor:wait;transform:none}.alt,button.alt,.button.alt{background:#24201a;color:#f4dba0;border-color:#6e5730;box-shadow:none}.flex{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.hidden{display:none!important}.notice{margin-top:14px;padding:13px 15px;border-radius:11px;overflow-wrap:anywhere;white-space:pre-wrap}.notice.good{background:#133523;border:1px solid #32794b;color:#c5f8d4}.notice.bad{background:#351c20;border:1px solid #9e474f;color:#ffd0d2}.preview{position:relative;isolation:isolate;display:grid;place-items:center;min-height:225px;margin-top:20px;border:2px solid var(--accent);border-radius:18px;background:linear-gradient(135deg,#0a0b0e,#242025);text-align:center;overflow:hidden;box-shadow:0 0 30px #d4af371a}.preview>img,.preview>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}.preview:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#08080bbb,#08080b66);z-index:-1}.preview>div{padding:20px;text-shadow:0 2px 10px #000}.preview h2{font-size:clamp(1.4rem,5vw,2.1rem);color:var(--accent)}.rowline{padding:20px 0;border-bottom:1px solid #7e663c55}.rowline:last-child{border:0}.rowline h3{margin:0 0 5px}.rowline details{margin-top:10px;padding:13px;border:1px solid #715b383d;border-radius:12px;background:#0b0d10}.rowline summary{cursor:pointer;color:#e9c56e;font-weight:700}.rowline details button{margin-top:16px}#login{max-width:550px;margin:35px auto 0;padding:clamp(25px,6vw,40px)}#login:after{content:"♛";position:absolute;right:15px;top:-30px;color:#d5ad3012;font-size:180px;pointer-events:none}#login h2{font-size:1.75rem}#login button{width:100%;margin-top:22px;font-size:1rem}#dashboard>.panel:first-child{background:linear-gradient(110deg,#231a0e,#101115 75%)}#shopName{font-size:1.7rem}#shopUser{margin:0}#products{overflow-wrap:anywhere}::selection{background:#a77a2b;color:white}@media(min-width:760px){#dashboard{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}#dashboard>.panel{margin:0}#dashboard>.panel:first-child{grid-column:1/-1}#dashboard>.panel:nth-child(2){grid-column:1/-1}#dashboard>.panel:nth-child(4){grid-column:1/-1}#stockSection{grid-column:1/-1}}@media(max-width:600px){header .wrap{padding:17px 15px}header .muted{font-size:.67rem}main{padding:16px 12px 50px}.panel{border-radius:16px}button,.button{max-width:100%}.flex>div:last-child{display:flex;flex-wrap:wrap;gap:8px}.flex>div:last-child button,.flex>div:last-child .button{margin:5px 0}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
-</style>
-</head><body><header><div class="wrap"><h1>♛ CLANDES PREMIUM</h1><span class="muted">Panel privado de vendedores</span></div></header><main>
-<section id="login" class="panel"><h2>🔐 Acceso exclusivo</h2><p class="muted">Bienvenido a tu centro de control. Administra tu imperio digital con seguridad.</p><form id="loginForm"><label for="email">Correo</label><input id="email" type="email" autocomplete="username" required><label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password" required><button id="signin">Entrar</button></form><div id="loginMsg" class="notice hidden"></div></section>
-<div id="dashboard" class="hidden"><section class="panel"><div class="flex"><div><h2 id="shopName">Mi tienda</h2><p id="shopUser" class="muted"></p></div><div><a id="publicLink" class="button alt" href="tienda.html" target="_blank" rel="noopener">Ver mi tienda</a><button id="logout" class="alt">Cerrar sesión</button></div></div><div id="dashMsg" class="notice hidden"></div></section>
 
-<!-- CLANDES PREMIUM: CENTRO DE IDENTIDAD -->
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Panel vendedor | CLANDES PREMIUM</title>
+<link rel="stylesheet" href="assets/styles.css?v=24">
+
+<style>
+:root {
+  color-scheme: dark;
+  --accent: #d4af37;
+  --gold: #e9c56e;
+  --line: rgba(227,185,91,.23);
+  --muted: #a99e8d;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 80% 35% at 50% -10%,rgba(181,126,27,.23),transparent 75%),
+    radial-gradient(circle at 100% 55%,rgba(137,87,16,.07),transparent 40%),
+    #08090b;
+  color: #f7f1e7;
+  font: 15px/1.6 system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+}
+
+body:before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .15;
+  background-image:
+    linear-gradient(rgba(245,202,109,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(245,202,109,.06) 1px,transparent 1px);
+  background-size: 46px 46px;
+}
+
+header {
+  position: relative;
+  background: linear-gradient(100deg,rgba(24,20,13,.98),rgba(9,10,12,.97));
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 12px 40px #0009;
+}
+
+header .wrap {
+  max-width: 1100px;
+  margin: auto;
+  padding: 23px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+header h1 {
+  margin: 0;
+  font-size: clamp(1.3rem,4vw,1.85rem);
+  letter-spacing: 2px;
+  font-weight: 900;
+  background: linear-gradient(120deg,#fff5cd,#d6a738 45%,#fff2b8 70%,#a87719);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+header .muted {
+  font-size: .8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+main {
+  position: relative;
+  max-width: 1100px;
+  margin: auto;
+  padding: 26px 16px 70px;
+}
+
+.panel {
+  position: relative;
+  margin: 0 0 20px;
+  padding: clamp(20px,4vw,32px);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: linear-gradient(135deg,rgba(28,25,21,.97),rgba(14,15,18,.98) 65%);
+  box-shadow: 0 18px 50px #0007,inset 0 1px 0 #ffe5a511;
+  overflow: hidden;
+}
+
+.panel:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  height: 1px;
+  background: linear-gradient(90deg,transparent,#ffe7a375,transparent);
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: clamp(1.2rem,3.5vw,1.5rem);
+  line-height: 1.3;
+  color: #f5d589;
+}
+
+h3 { color: #f0d392; }
+
+p { margin: 8px 0 14px; }
+
+.muted { color: var(--muted); }
+
+label {
+  display: block;
+  margin: 16px 0 7px;
+  color: #e8d9bb;
+  font-size: .9rem;
+  font-weight: 650;
+}
+
+input,textarea,select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 13px 14px;
+  border-radius: 11px;
+  border: 1px solid #6c583a;
+  background: linear-gradient(135deg,#0b0d10,#111318);
+  color: #fff;
+  font: inherit;
+  outline: none;
+}
+
+input:focus,textarea:focus,select:focus {
+  border-color: #e7bc58;
+  box-shadow: 0 0 0 3px #d9ac3330;
+}
+
+textarea {
+  min-height: 105px;
+  resize: vertical;
+}
+
+button,.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 43px;
+  padding: 11px 19px;
+  margin: 14px 8px 0 0;
+  border: 1px solid #f6da8a66;
+  border-radius: 11px;
+  background: linear-gradient(115deg,#a97822,#f2cf71 45%,#bd8b31);
+  box-shadow: inset 0 1px 0 #fff8,0 5px 18px #b1842930;
+  color: #211708;
+  font: 800 .92rem system-ui,Arial;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+button:disabled {
+  opacity: .55;
+  cursor: wait;
+}
+
+.alt,button.alt,.button.alt {
+  background: #24201a;
+  color: #f4dba0;
+  border-color: #6e5730;
+  box-shadow: none;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.hidden { display: none !important; }
+
+.notice {
+  margin-top: 14px;
+  padding: 13px 15px;
+  border-radius: 11px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.notice.good {
+  background: #133523;
+  border: 1px solid #32794b;
+  color: #c5f8d4;
+}
+
+.notice.bad {
+  background: #351c20;
+  border: 1px solid #9e474f;
+  color: #ffd0d2;
+}
+
+/* IDENTIDAD DE MARCA */
+
+.identity-preview {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 22px;
+  padding: 20px;
+  border: 1px solid rgba(212,175,55,.35);
+  border-radius: 16px;
+  background: linear-gradient(120deg,#11151c,#211a13);
+}
+
+.identity-preview-icon {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--accent);
+  border-radius: 14px;
+  background: #111827;
+  color: var(--accent);
+  font-size: 1.6rem;
+  font-weight: 900;
+}
+
+.identity-preview-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#identityPreviewName {
+  display: block;
+  color: var(--accent);
+  font-size: 1.1rem;
+  overflow-wrap: anywhere;
+}
+
+.identity-preview p {
+  margin: 3px 0 0;
+}
+
+/* DISEÑO */
+
+.preview {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-height: 225px;
+  margin-top: 20px;
+  border: 2px solid var(--accent);
+  border-radius: 18px;
+  background: linear-gradient(135deg,#0a0b0e,#242025);
+  text-align: center;
+  overflow: hidden;
+}
+
+.preview > img,
+.preview > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.preview:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,#08080bbb,#08080b66);
+  z-index: -1;
+}
+
+.preview > div {
+  padding: 20px;
+  text-shadow: 0 2px 10px #000;
+}
+
+.preview h2 {
+  font-size: clamp(1.4rem,5vw,2.1rem);
+  color: var(--accent);
+}
+
+/* PRODUCTOS */
+
+.rowline {
+  padding: 20px 0;
+  border-bottom: 1px solid #7e663c55;
+}
+
+.rowline:last-child { border: 0; }
+
+.rowline h3 { margin: 0 0 5px; }
+
+.rowline details {
+  margin-top: 10px;
+  padding: 13px;
+  border: 1px solid #715b383d;
+  border-radius: 12px;
+  background: #0b0d10;
+}
+
+.rowline summary {
+  cursor: pointer;
+  color: #e9c56e;
+  font-weight: 700;
+}
+
+#login {
+  max-width: 550px;
+  margin: 35px auto 0;
+}
+
+#login button {
+  width: 100%;
+}
+
+#dashboard > .panel:first-child {
+  background: linear-gradient(110deg,#231a0e,#101115 75%);
+}
+
+#shopName { font-size: 1.7rem; }
+
+#shopUser { margin: 0; }
+
+#products { overflow-wrap: anywhere; }
+
+@media(min-width:760px) {
+  #dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  #dashboard > .panel { margin: 0; }
+
+  #dashboard > .panel:first-child,
+  #identityPanel,
+  #stockSection {
+    grid-column: 1 / -1;
+  }
+}
+
+@media(max-width:600px) {
+  header .wrap { padding: 17px 15px; }
+  main { padding: 16px 12px 50px; }
+  .panel { border-radius: 16px; }
+  button,.button { max-width: 100%; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>♛ CLANDES PREMIUM</h1>
+    <span class="muted">
+      Panel privado de vendedores
+    </span>
+  </div>
+</header>
+
+<main>
+
+<!-- INICIO DE SESIÓN -->
+
+<section id="login" class="panel">
+  <h2>🔐 Acceso exclusivo</h2>
+
+  <p class="muted">
+    Bienvenido a tu centro de control.
+    Administra tu imperio digital con seguridad.
+  </p>
+
+  <form id="loginForm">
+    <label for="email">Correo</label>
+    <input id="email" type="email"
+           autocomplete="username" required>
+
+    <label for="password">Contraseña</label>
+    <input id="password" type="password"
+           autocomplete="current-password" required>
+
+    <button id="signin" type="submit">
+      Entrar
+    </button>
+  </form>
+
+  <div id="loginMsg"
+       class="notice hidden"></div>
+</section>
+
+<!-- PANEL PRIVADO -->
+
+<div id="dashboard" class="hidden">
+
+<section class="panel">
+  <div class="flex">
+    <div>
+      <h2 id="shopName">Mi tienda</h2>
+      <p id="shopUser" class="muted"></p>
+    </div>
+
+    <div>
+      <a id="publicLink"
+         class="button alt"
+         href="tienda.html"
+         target="_blank"
+         rel="noopener">
+        Ver mi tienda
+      </a>
+
+      <button id="logout"
+              type="button"
+              class="alt">
+        Cerrar sesión
+      </button>
+    </div>
+  </div>
+
+  <div id="dashMsg"
+       class="notice hidden"></div>
+</section>
+
+<!-- IDENTIDAD -->
 
 <section class="panel" id="identityPanel">
-
   <h2>💎 Identidad de mi marca</h2>
 
   <p class="muted">
-    Personaliza el nombre y logotipo que verán
-    tus clientes en la parte superior de tu tienda.
+    Personaliza el nombre y logotipo
+    que verán tus clientes.
   </p>
 
   <label for="identityName">
     Nombre visible de la tienda
   </label>
 
-  <input
-    id="identityName"
-    type="text"
-    maxlength="80"
-    placeholder="Ejemplo: Berry Digital"
-  >
+  <input id="identityName"
+         type="text"
+         maxlength="80"
+         placeholder="Berry Digital">
 
   <label for="identityMode">
     Tipo de logotipo
@@ -50,12 +482,10 @@
       Emoji o símbolo
     </label>
 
-    <input
-      id="identityEmoji"
-      type="text"
-      maxlength="12"
-      placeholder="Ejemplo: 💎"
-    >
+    <input id="identityEmoji"
+           type="text"
+           maxlength="12"
+           placeholder="💎">
   </div>
 
   <div id="identityImageBox" class="hidden">
@@ -63,23 +493,18 @@
       URL HTTPS del logotipo
     </label>
 
-    <input
-      id="identityLogoUrl"
-      type="url"
-      placeholder="https://ejemplo.com/logo.png"
-    >
+    <input id="identityLogoUrl"
+           type="url"
+           placeholder="https://ejemplo.com/logo.png">
 
     <p class="muted">
-      Usa una imagen alojada en una dirección HTTPS.
-      Más adelante integraremos subida directa.
+      Utiliza una imagen pública alojada en HTTPS.
     </p>
   </div>
 
   <div class="identity-preview">
     <div class="identity-preview-icon"
-         id="identityPreviewIcon">
-      B
-    </div>
+         id="identityPreviewIcon">B</div>
 
     <div>
       <strong id="identityPreviewName">
@@ -92,68 +517,172 @@
     </div>
   </div>
 
-  <button id="saveIdentity" type="button">
+  <button id="saveIdentity"
+          type="button">
     💾 Guardar identidad
   </button>
 
   <div id="identityMsg"
        class="notice hidden"></div>
-
 </section>
 
-<style>
-  .identity-preview {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-top: 22px;
-    padding: 20px;
-    border: 1px solid
-      rgba(212,175,55,.35);
-    border-radius: 16px;
-    background: linear-gradient(
-      120deg,
-      #11151c,
-      #211a13
-    );
-  }
+<!-- DISEÑO -->
 
-  .identity-preview-icon {
-    width: 58px;
-    height: 58px;
-    flex-shrink: 0;
-    display: grid;
-    place-items: center;
-    overflow: hidden;
-    border: 1px solid var(--accent);
-    border-radius: 14px;
-    background: #111827;
-    color: var(--accent);
-    font-size: 1.6rem;
-    font-weight: 900;
-  }
+<section class="panel">
+  <h2>🎨 Estudio creativo premium</h2>
 
-  .identity-preview-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  <p class="muted">
+    Personaliza plantilla, colores
+    y fondo de tu catálogo.
+  </p>
 
-  #identityPreviewName {
-    display: block;
-    color: var(--accent);
-    font-size: 1.1rem;
-    overflow-wrap: anywhere;
-  }
+  <label for="template">Plantilla</label>
 
-  .identity-preview p {
-    margin: 3px 0 0;
-  }
-</style>
-<!-- FIN CENTRO DE IDENTIDAD -->
-  
-  <section class="panel"><h2>🎨 Estudio creativo premium</h2><p class="muted">Haz que tu tienda tenga una identidad única: elige plantilla, colores y fondos cinematográficos. Usa enlaces HTTPS; la subida directa de archivos requiere configurar Storage.</p><label for="template">Plantilla</label><select id="template"><option value="neon-tech">⚡ Neon Tech</option><option value="gaming">🎮 Gaming</option><option value="luxury">👑 Luxury Gold</option><option value="cinematica">🎬 Cinemática</option><option value="modern-blue">💠 Modern Blue</option></select><label for="color">Color / tema (24 opciones)</label><select id="color"></select><label for="backgroundType">Fondo del catálogo</label><select id="backgroundType"><option value="imagen">Imagen</option><option value="video">Video</option></select><label for="backgroundUrl">URL HTTPS de imagen o video</label><input id="backgroundUrl" type="url" placeholder="https://ejemplo.com/fondo.jpg"><label for="shopDescription">Descripción de la tienda</label><textarea id="shopDescription" maxlength="1000"></textarea><div id="preview" class="preview"><div><h2>♛ Vista previa</h2><p>Tu marca. Tu universo. Tu estilo.</p></div></div><button id="saveDesign">Guardar diseño</button><div id="designMsg" class="notice hidden"></div></section>
-<section class="panel"><h2>➕ Agregar producto</h2><form id="productForm"><label for="pname">Nombre</label><input id="pname" maxlength="140" required><label for="pdesc">Descripción</label><textarea id="pdesc"></textarea><label for="pprice">Precio MXN</label><input id="pprice" type="number" min="0" step="0.01" required><label for="pimage">URL HTTPS de imagen (opcional)</label><input id="pimage" type="url"><label for="pvideo">URL HTTPS de video (opcional)</label><input id="pvideo" type="url"><button id="addProduct">Crear producto inactivo</button></form><div id="productMsg" class="notice hidden"></div></section>
-<section class="panel"><h2>💎 Mi catálogo de productos</h2><p class="muted">Edita nombre, descripción, precio, imagen y video. Los cambios deben estar protegidos por RLS en Supabase.</p><div id="products">Cargando…</div></section>
-<section id="stockSection" class="panel hidden"><h2 id="stockTitle">Agregar stock</h2><p class="muted">Una licencia o código autorizado por línea. No ingreses contraseñas personales ni datos de terceros. Verifica las políticas de acceso al inventario antes de usarlo con información real.</p><textarea id="stockLines" placeholder="CODIGO-001&#10;CODIGO-002"></textarea><button id="addStock">Guardar unidades</button><button id="cancelStock" class="alt">Cancelar</button><div id="stockMsg" class="notice hidden"></div></section></div>
-</main><script type="module" src="assets/seller.js"></script></body></html>
+  <select id="template">
+    <option value="neon-tech">⚡ Neon Tech</option>
+    <option value="gaming">🎮 Gaming</option>
+    <option value="luxury">👑 Luxury Gold</option>
+    <option value="cinematica">🎬 Cinemática</option>
+    <option value="modern-blue">💠 Modern Blue</option>
+  </select>
+
+  <label for="color">
+    Color / tema (24 opciones)
+  </label>
+
+  <select id="color"></select>
+
+  <label for="backgroundType">
+    Fondo del catálogo
+  </label>
+
+  <select id="backgroundType">
+    <option value="imagen">Imagen</option>
+    <option value="video">Video</option>
+  </select>
+
+  <label for="backgroundUrl">
+    URL HTTPS de imagen o video
+  </label>
+
+  <input id="backgroundUrl"
+         type="url"
+         placeholder="https://ejemplo.com/fondo.jpg">
+
+  <label for="shopDescription">
+    Descripción de la tienda
+  </label>
+
+  <textarea id="shopDescription"
+            maxlength="1000"></textarea>
+
+  <div id="preview" class="preview">
+    <div>
+      <h2>♛ Vista previa</h2>
+      <p>Tu marca. Tu universo. Tu estilo.</p>
+    </div>
+  </div>
+
+  <button id="saveDesign" type="button">
+    Guardar diseño
+  </button>
+
+  <div id="designMsg"
+       class="notice hidden"></div>
+</section>
+
+<!-- CREAR PRODUCTO -->
+
+<section class="panel">
+  <h2>➕ Agregar producto</h2>
+
+  <form id="productForm">
+    <label for="pname">Nombre</label>
+    <input id="pname"
+           maxlength="140" required>
+
+    <label for="pdesc">Descripción</label>
+    <textarea id="pdesc"></textarea>
+
+    <label for="pprice">Precio MXN</label>
+    <input id="pprice"
+           type="number"
+           min="0"
+           step="0.01" required>
+
+    <label for="pimage">
+      URL HTTPS de imagen
+    </label>
+    <input id="pimage" type="url">
+
+    <label for="pvideo">
+      URL HTTPS de video
+    </label>
+    <input id="pvideo" type="url">
+
+    <button id="addProduct"
+            type="submit">
+      Crear producto inactivo
+    </button>
+  </form>
+
+  <div id="productMsg"
+       class="notice hidden"></div>
+</section>
+
+<!-- CATÁLOGO -->
+
+<section class="panel">
+  <h2>💎 Mi catálogo de productos</h2>
+
+  <p class="muted">
+    Edita tus productos, precios,
+    imágenes, videos y disponibilidad.
+  </p>
+
+  <div id="products">
+    Cargando…
+  </div>
+</section>
+
+<!-- INVENTARIO -->
+
+<section id="stockSection"
+         class="panel hidden">
+
+  <h2 id="stockTitle">
+    Agregar stock
+  </h2>
+
+  <p class="muted">
+    Una licencia o código autorizado
+    por línea. No ingreses contraseñas
+    personales ni datos de terceros.
+  </p>
+
+  <textarea id="stockLines"
+            placeholder="CODIGO-001&#10;CODIGO-002"></textarea>
+
+  <button id="addStock"
+          type="button">
+    Guardar unidades
+  </button>
+
+  <button id="cancelStock"
+          type="button"
+          class="alt">
+    Cancelar
+  </button>
+
+  <div id="stockMsg"
+       class="notice hidden"></div>
+</section>
+
+</div>
+</main>
+
+<script type="module"
+        src="assets/seller.js?v=24"></script>
+
+</body>
+</html>
