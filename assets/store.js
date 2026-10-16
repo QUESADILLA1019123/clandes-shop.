@@ -88,7 +88,7 @@ function renderLogo(shop, name) {
   }
 }
 
-function configureShop(shop) {
+function configureShop(shop) { document.body.dataset.template = shop.plantilla || 'luxury';
   const name = getShopName(shop);
 
   document.title = name + ' | CLANDES PREMIUM';
