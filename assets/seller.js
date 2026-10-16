@@ -828,6 +828,125 @@ async function loadProducts() {
       'url'
     );
 
+  // SUBIR IMAGEN O VIDEO DESDE GALERÍA
+  function crearSubida(tipo, campo) {
+    const boton = document.createElement('button');
+    boton.type = 'button';
+    boton.textContent = tipo === 'imagen'
+      ? '🖼️ Subir imagen desde galería'
+      : '🎬 Subir video desde galería';
+
+    const archivoInput = document.createElement('input');
+    archivoInput.type = 'file';
+    archivoInput.accept = tipo === 'imagen'
+      ? 'image/jpeg,image/png,image/webp'
+      : 'video/mp4';
+    archivoInput.style.display = 'none';
+
+    const estado = document.createElement('p');
+    estado.className = 'muted';
+
+    const vista = document.createElement('div');
+    vista.style.margin = '10px 0';
+
+    function mostrarVista(url) {
+      vista.replaceChildren();
+
+      if (!url || !safeUrl(url)) return;
+
+      const elemento = document.createElement(
+        tipo === 'imagen' ? 'img' : 'video'
+      );
+
+      elemento.src = url;
+      elemento.style.width = '100%';
+      elemento.style.maxHeight = '220px';
+      elemento.style.objectFit = 'contain';
+      elemento.style.borderRadius = '12px';
+
+      if (tipo === 'video') {
+        elemento.autoplay = true;
+        elemento.loop = true;
+        elemento.muted = true;
+        elemento.playsInline = true;
+      }
+
+      vista.append(elemento);
+    }
+
+    mostrarVista(campo.value);
+
+    campo.addEventListener('change', () => {
+      mostrarVista(campo.value.trim());
+    });
+
+    boton.onclick = () => archivoInput.click();
+
+    archivoInput.onchange = async () => {
+      const archivo = archivoInput.files?.[0];
+      if (!archivo) return;
+
+      const tipos = tipo === 'imagen'
+        ? ['image/jpeg', 'image/png', 'image/webp']
+        : ['video/mp4'];
+
+      if (!tipos.includes(archivo.type)) {
+        estado.textContent = 'Formato no permitido.';
+        return;
+      }
+
+      if (archivo.size > 50 * 1024 * 1024) {
+        estado.textContent = 'Máximo 50 MB por archivo.';
+        return;
+      }
+
+      boton.disabled = true;
+      estado.textContent = 'Subiendo archivo...';
+
+      try {
+        const extension = tipo === 'imagen'
+          ? archivo.type.split('/')[1].replace('jpeg', 'jpg')
+          : 'mp4';
+
+        const ruta =
+          shop.id + '/' +
+          product.id + '/' +
+          crypto.randomUUID() + '.' + extension;
+
+        const resultado = await db.storage
+          .from('productos-media')
+          .upload(ruta, archivo, {
+            contentType: archivo.type,
+            upsert: false
+          });
+
+        if (resultado.error) throw resultado.error;
+
+        const publico = db.storage
+          .from('productos-media')
+          .getPublicUrl(ruta);
+
+        campo.value = publico.data.publicUrl;
+        mostrarVista(campo.value);
+
+        estado.textContent =
+          'Archivo subido. Pulsa Guardar cambios para aplicarlo.';
+
+      } catch (error) {
+        estado.textContent =
+          'Error al subir: ' + error.message;
+      } finally {
+        boton.disabled = false;
+        archivoInput.value = '';
+      }
+    };
+
+    edit.append(boton, archivoInput, estado, vista);
+  }
+
+  crearSubida('imagen', image);
+  crearSubida('video', video);
+         
     // GUARDAR PRODUCTO
 
     const save =
