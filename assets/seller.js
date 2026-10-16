@@ -1039,4 +1039,42 @@ $('addStock').onclick = async () => {
       .from('inventario_digital')
       .insert(
         lines.map(contenido => ({
-          produ
+          
+producto_id: selected.id,
+          contenido,
+          estado: 'disponible'
+        }))
+      );
+
+    if (res.error) {
+      throw res.error;
+    }
+
+    notice(
+      'stockMsg',
+      lines.length +
+      ' unidades agregadas correctamente.',
+      true
+    );
+
+    $('stockLines').value = '';
+
+    await loadProducts();
+
+  } catch (error) {
+    notice(
+      'stockMsg',
+      error.message
+    );
+  } finally {
+    setBusy('addStock', false);
+  }
+};
+
+// INICIAR PANEL
+session().catch(error => {
+  visible('dashboard', false);
+  visible('login', true);
+  notice('loginMsg', error.message);
+});
+
