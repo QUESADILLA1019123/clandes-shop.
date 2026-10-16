@@ -408,3 +408,76 @@ body[data-template="royal-black"] #catalog .clandes-price {
   color: #cbd5e1;
   font-weight: 800;
 }
+/* =====================================
+   CLANDES PREMIUM — ELITE 8
+   Azul eléctrico futurista
+   ===================================== */
+
+body[data-template="cyber-blue"] {
+  background: #060b1a;
+  color: #eaf7ff;
+}
+
+body[data-template="cyber-blue"] header {
+  background: linear-gradient(135deg, #071126, #102c65);
+  border-bottom: 1px solid #00d9ff;
+}
+
+body[data-template="cyber-blue"] #hero {
+  background: linear-gradient(145deg, #102c65, #060b1a);
+  border: 1px solid #2563eb;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 25px #2563eb22;
+}
+
+/* Portada compacta */
+body[data-template="cyber-blue"] #hero img,
+body[data-template="cyber-blue"] #hero video {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Tarjetas futuristas */
+body[data-template="cyber-blue"] #catalog .product {
+  background: linear-gradient(160deg, #102047, #080e20);
+  border: 1px solid #2563eb;
+  border-radius: 18px;
+  overflow: hidden;
+  min-width: 0;
+  box-shadow: 0 5px 22px #006aff22;
+}
+
+/* Espacio uniforme para multimedia */
+body[data-template="cyber-blue"] #catalog .clandes-media {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #091329;
+}
+
+body[data-template="cyber-blue"] #catalog .clandes-media img,
+body[data-template="cyber-blue"] #catalog .clandes-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Precios luminosos */
+body[data-template="cyber-blue"] #catalog .clandes-price {
+  color: #00d9ff;
+  font-weight: 800;
+}
+
+/* Efecto al tocar o pasar el cursor */
+@media (hover: hover) {
+  body[data-template="cyber-blue"] #catalog .product:hover {
+    border-color: #00d9ff;
+    box-shadow: 0 0 22px #00d9ff33;
+    transform: translateY(-3px);
+    transition: 0.25s ease;
+  }
+}
