@@ -1,208 +1,286 @@
 
+/*
+  CLANDES PREMIUM
+  Tienda publica personalizada
+*/
+
 import {
   db,
   $,
   notice,
+  safeUrl,
   applyAccent,
   renderBackdrop,
   mediaNode,
   currency
 } from './shared.js';
 
+// USUARIO DE LA TIENDA
+const params = new URLSearchParams(window.location.search);
+
 const username =
-  new URLSearchParams(window.location.search).get('usuario') ||
-  'berrydigital';
+  params.get('usuario') || 'berrydigital';
 
 let products = [];
 
-// Mostrar los productos del catálogo
-function paint() {
-  const searchInput = $('search');
+// TEXTO SEGURO
+function clean(value, fallback = '') {
+  return typeof value === 'string'
+    ? value.trim() || fallback
+    : fallback;
+}
 
-  const query = searchInput
-    ? searchInput.value.toLocaleLowerCase('es').trim()
-    : '';
+// NOMBRE PERSONALIZADO
+function getShopName(shop) {
+  return clean(
+    shop.nombre_visible,
+    clean(shop.nombre, 'Mi tienda')
+  );
+}
 
-  const shown = products.filter(product => {
-    const text = (
-      product.nombre + ' ' + (product.descripcion || '')
-    ).toLocaleLowerCase('es');
+// LOGO, EMOJI O INICIAL
+function renderLogo(shop, name) {
+  const logo = $('shopLogo');
+  const emoji = clean(shop.logo_emoji);
+  const imageUrl = clean(shop.logo_url);
 
-    return text.includes(query);
-  });
+  const initial =
+    Array.from(name)[0]?.toLocaleUpperCase('es') || 'T';
 
-  const counter = $('counter');
-  const catalog = $('catalog');
+  const fallback = emoji || initial;
 
-  if (counter) {
-    counter.textContent = shown.length + ' productos';
+  if (!logo) {
+    const oldLogo = $('logoInitial');
+
+    if (oldLogo) {
+      oldLogo.textContent = fallback;
+    }
+
+    return;
   }
 
+  logo.replaceChildren();
+  logo.setAttribute('aria-label', 'Logo de ' + name);
+
+  function showSymbol() {
+    logo.replaceChildren();
+
+    const symbol = document.createElement('span');
+    symbol.textContent = fallback;
+    symbol.style.fontSize = emoji ? '1.6rem' : '1.4rem';
+    symbol.style.lineHeight = '1';
+
+    logo.append(symbol);
+  }
+
+  if (imageUrl && safeUrl(imageUrl)) {
+    const img = document.createElement('img');
+
+    img.src = imageUrl;
+    img.alt = 'Logo de ' + name;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'cover';
+    img.style.display = 'block';
+    img.style.borderRadius = 'inherit';
+
+    img.addEventListener('error', showSymbol, {
+      once: true
+    });
+
+    logo.append(img);
+  } else {
+    showSymbol();
+  }
+}
+
+// IDENTIDAD Y DISEÑO
+function configureShop(shop) {
+  const name = getShopName(shop);
+
+  document.title = name + ' | CLANDES PREMIUM';
+
+  if ($('brand')) {
+    $('brand').textContent = name;
+  }
+
+  if ($('shopTitle')) {
+    $('shopTitle').textContent = name;
+  }
+
+  if ($('shopDesc')) {
+    $('shopDesc').textContent = clean(
+      shop.descripcion,
+      'Bienvenido a nuestro catálogo digital'
+    );
+  }
+
+  if ($('shopTag')) {
+    $('shopTag').textContent = clean(
+      shop.plantilla,
+      'neon-tech'
+    ).toUpperCase();
+  }
+
+  renderLogo(shop, name);
+
+  document.body.dataset.theme =
+    clean(shop.plantilla, 'neon-tech');
+
+  applyAccent(shop.color_principal || '#D4AF37');
+
+  if ($('hero')) {
+    const video = clean(shop.video_fondo_url);
+    const image = clean(shop.imagen_fondo_url);
+
+    renderBackdrop(
+      $('hero'),
+      video || image,
+      video ? 'video' : 'imagen'
+    );
+  }
+}
+
+// CREAR TARJETAS
+function makeCard(product) {
+  const card = document.createElement('article');
+  card.className = 'product';
+
+  const type = product.video_url
+    ? 'video'
+    : 'imagen';
+
+  const media = mediaNode(
+    product.video_url || product.imagen_url,
+    type
+  );
+
+  if (media) {
+    card.append(media);
+  }
+
+  const title = document.createElement('h3');
+  title.textContent = clean(
+    product.nombre,
+    'Producto digital'
+  );
+
+  const description = document.createElement('p');
+  description.textContent = clean(
+    product.descripcion,
+    'Producto digital'
+  );
+
+  const price = document.createElement('strong');
+  price.textContent = currency(product.precio);
+
+  const availability = document.createElement('p');
+  availability.className = 'muted';
+
+  availability.textContent =
+    Number(product.stock || 0) > 0
+      ? 'Stock: Disponible'
+      : 'Stock: Consultar disponibilidad';
+
+  card.append(
+    title,
+    description,
+    price,
+    availability
+  );
+
+  return card;
+}
+
+// BUSCADOR Y CATALOGO
+function paint() {
+  const search = $('search');
+
+  const query = search
+    ? search.value.toLocaleLowerCase('es').trim()
+    : '';
+
+  const filtered = products.filter(product => {
+    const words = (
+      clean(product.nombre) + ' ' +
+      clean(product.descripcion)
+    ).toLocaleLowerCase('es');
+
+    return words.includes(query);
+  });
+
+  if ($('counter')) {
+    $('counter').textContent =
+      filtered.length + ' productos';
+  }
+
+  const catalog = $('catalog');
   if (!catalog) return;
 
   catalog.replaceChildren();
 
-  if (!shown.length) {
-    catalog.textContent =
-      'No hay productos activos disponibles.';
+  if (!filtered.length) {
+    const empty = document.createElement('p');
+
+    empty.className = 'muted';
+    empty.textContent = query
+      ? 'No encontramos productos con esa búsqueda.'
+      : 'No hay productos activos disponibles.';
+
+    catalog.append(empty);
     return;
   }
 
-  for (const product of shown) {
-    const card = document.createElement('article');
-    card.className = 'product';
+  const fragment = document.createDocumentFragment();
 
-    // Imagen o video del producto
-    const mediaType = product.video_url
-      ? 'video'
-      : 'imagen';
-
-    const mediaUrl =
-      product.video_url || product.imagen_url;
-
-    const media = mediaNode(mediaUrl, mediaType);
-
-    if (media) {
-      card.append(media);
-    }
-
-    // Nombre
-    const title = document.createElement('h3');
-    title.textContent = product.nombre;
-
-    // Descripción
-    const description = document.createElement('p');
-    description.textContent =
-      product.descripcion || 'Producto digital';
-
-    // Precio
-    const price = document.createElement('strong');
-    price.textContent = currency(product.precio);
-
-    // Stock
-    const stock = document.createElement('p');
-    stock.className = 'muted';
-
-    stock.textContent =
-      Number(product.stock || 0) > 0
-        ? 'Stock: Disponible'
-        : 'Stock: Consultar disponibilidad';
-
-    card.append(
-      title,
-      description,
-      price,
-      stock
-    );
-
-    catalog.append(card);
+  for (const product of filtered) {
+    fragment.append(makeCard(product));
   }
+
+  catalog.append(fragment);
 }
 
-// Personalizar el encabezado de cada tienda
-function configureHeader(shop) {
-  const name = (shop.nombre || 'Mi tienda').trim();
-
-  // Nombre sin corona
-  const brand = $('brand');
-
-  if (brand) {
-    brand.textContent = name;
-  }
-
-  // Logo provisional con inicial del nombre
-  const logoInitial = $('logoInitial');
-
-  if (logoInitial) {
-    logoInitial.textContent =
-      name.charAt(0).toUpperCase() || 'T';
-  }
-
-  // Título principal
-  const shopTitle = $('shopTitle');
-
-  if (shopTitle) {
-    shopTitle.textContent = name;
-  }
-
-  // Descripción
-  const shopDesc = $('shopDesc');
-
-  if (shopDesc) {
-    shopDesc.textContent =
-      shop.descripcion || 'Bienvenido a nuestro catálogo';
-  }
-
-  // Nombre de la plantilla
-  const shopTag = $('shopTag');
-
-  if (shopTag) {
-    shopTag.textContent =
-      (shop.plantilla || 'neon-tech').toUpperCase();
-  }
-
-  // Activar el tema visual de la tienda
-  document.body.dataset.theme =
-    shop.plantilla || 'neon-tech';
-
-  // Color elegido por el vendedor
-  applyAccent(shop.color_principal);
-
-  // Imagen o video de fondo
-  const hero = $('hero');
-
-  if (hero) {
-    renderBackdrop(
-      hero,
-      shop.video_fondo_url || shop.imagen_fondo_url,
-      shop.video_fondo_url ? 'video' : 'imagen'
-    );
-  }
-
-  document.title = name + ' | CLANDES PREMIUM';
-}
-
-// Cargar la tienda desde Supabase
+// CARGAR TIENDA Y PRODUCTOS
 async function init() {
   try {
-    const { data: shop, error } = await db
+    const { data: shop, error: shopError } = await db
       .from('tiendas')
       .select(
-        'id,nombre,usuario,descripcion,estado,plantilla,color_principal,imagen_fondo_url,video_fondo_url'
+        'id,nombre,nombre_visible,usuario,' +
+        'descripcion,estado,plantilla,' +
+        'color_principal,imagen_fondo_url,' +
+        'video_fondo_url,logo_url,logo_emoji'
       )
       .eq('usuario', username)
       .eq('estado', 'activa')
       .maybeSingle();
 
-    if (error) throw error;
+    if (shopError) throw shopError;
 
     if (!shop) {
-      throw new Error(
-        'No se encontró una tienda activa con ese usuario.'
-      );
+      throw Error('No se encontró una tienda activa.');
     }
 
-    // Personalización individual
-    configureHeader(shop);
+    configureShop(shop);
 
-    // Productos de esta tienda
-    const { data, error: productsError } = await db
+    const { data, error: productError } = await db
       .from('productos')
       .select(
-        'id,nombre,descripcion,precio,stock,activo,imagen_url,video_url'
+        'id,nombre,descripcion,precio,' +
+        'stock,activo,imagen_url,video_url'
       )
       .eq('tienda_id', shop.id)
       .eq('activo', true)
       .order('nombre');
 
-    if (productsError) throw productsError;
+    if (productError) throw productError;
 
     products = data || [];
 
     paint();
 
   } catch (error) {
-    console.error('Error al cargar tienda:', error);
+    console.error('CLANDES PREMIUM:', error);
 
     notice(
       'error',
@@ -211,12 +289,10 @@ async function init() {
   }
 }
 
-// Buscador
-const searchInput = $('search');
-
-if (searchInput) {
-  searchInput.addEventListener('input', paint);
+// BUSCADOR EN TIEMPO REAL
+if ($('search')) {
+  $('search').addEventListener('input', paint);
 }
 
-// Iniciar tienda
+// INICIAR
 init();
