@@ -16,3 +16,99 @@ async function loadProducts(){const res=await db.from('productos').select('id,no
 $('cancelStock').onclick=()=>visible('stockSection',false);
 $('addStock').onclick=async()=>{if(!selected||!shop)return;const lines=$('stockLines').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);if(!lines.length||lines.length>100){notice('stockMsg','Ingresa entre 1 y 100 unidades.');return}setBusy('addStock',true);try{const r=await db.from('inventario_digital').insert(lines.map(contenido=>({producto_id:selected.id,contenido,estado:'disponible'})));if(r.error)throw r.error;notice('stockMsg',lines.length+' unidades agregadas. Comprueba que el stock mostrado se actualice según la lógica de tu base de datos.',true);$('stockLines').value='';await loadProducts()}catch(e){notice('stockMsg',e.message)}finally{setBusy('addStock',false)}};
 session().catch(e=>{visible('dashboard',false);visible('login',true);notice('loginMsg',e.message)});
+
+/* CLANDES PREMIUM - GUARDAR IDENTIDAD */
+
+const identityName = document.getElementById('identityName');
+const identityMode = document.getElementById('identityMode');
+const identityEmoji = document.getElementById('identityEmoji');
+const identityLogoUrl = document.getElementById('identityLogoUrl');
+const identityPreviewName = document.getElementById('identityPreviewName');
+const identityPreviewIcon = document.getElementById('identityPreviewIcon');
+const saveIdentity = document.getElementById('saveIdentity');
+
+function updateBrandPreview() {
+  const name = identityName.value.trim() || shop?.nombre || 'Mi tienda';
+  const mode = identityMode.value;
+
+  identityPreviewName.textContent = name;
+  identityPreviewIcon.replaceChildren();
+
+  if (mode === 'image' && safeUrl(identityLogoUrl.value.trim())) {
+    const img = document.createElement('img');
+    img.src = identityLogoUrl.value.trim();
+    img.alt = 'Logo';
+    img.onerror = () => {
+      identityPreviewIcon.textContent = name.charAt(0).toUpperCase();
+    };
+    identityPreviewIcon.append(img);
+  } else {
+    identityPreviewIcon.textContent = mode === 'emoji'
+      ? (identityEmoji.value.trim() || '🏪')
+      : name.charAt(0).toUpperCase();
+  }
+}
+
+for (const el of [identityName, identityMode, identityEmoji, identityLogoUrl]) {
+  el.addEventListener('input', updateBrandPreview);
+  el.addEventListener('change', updateBrandPreview);
+}
+
+saveIdentity.addEventListener('click', async () => {
+  saveIdentity.disabled = true;
+
+  try {
+    const {data: {user}, error: authError} = await db.auth.getUser();
+
+    if (authError || !user) {
+      throw Error('Tu sesión terminó. Inicia sesión nuevamente.');
+    }
+
+    if (!shop || shop.propietario_id && shop.propietario_id !== user.id) {
+      throw Error('No se encontró tu tienda activa.');
+    }
+
+    const name = identityName.value.trim();
+    const mode = identityMode.value;
+    const emoji = identityEmoji.value.trim();
+    const url = identityLogoUrl.value.trim();
+
+    if (!name) throw Error('Escribe un nombre para tu tienda.');
+    if (mode === 'emoji' && !emoji) throw Error('Escribe un emoji.');
+    if (mode === 'image' && (!url || !safeUrl(url))) {
+      throw Error('Introduce una URL HTTPS válida.');
+    }
+
+    const changes = {
+      nombre_visible: name,
+      logo_emoji: mode === 'emoji' ? emoji : null,
+      logo_url: mode === 'image' ? url : null
+    };
+
+    const {data, error} = await db
+      .from('tiendas')
+      .update(changes)
+      .eq('id', shop.id)
+      .eq('propietario_id', user.id)
+      .select('nombre_visible,logo_emoji,logo_url');
+
+    if (error) throw error;
+    if (data?.length !== 1) {
+      throw Error('Supabase no confirmó el guardado. Revisa los permisos.');
+    }
+
+    Object.assign(shop, data[0]);
+    document.getElementById('shopName').textContent =
+      shop.nombre_visible || shop.nombre;
+
+    updateBrandPreview();
+
+    notice('identityMsg', '¡Identidad guardada correctamente!', true);
+  } catch (error) {
+    notice('identityMsg', error.message);
+  } finally {
+    saveIdentity.disabled = false;
+  }
+});
+
+/* FIN GUARDAR IDENTIDAD */
