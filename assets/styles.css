@@ -197,3 +197,23 @@ button:active,
     grid-template-columns: 1fr;
   }
 }
+/* CLANDES PREMIUM — Catálogo móvil definitivo */
+
+@media screen and (max-width: 700px) {
+  body #catalog.grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+
+  body #catalog .product {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 340px) {
+  body #catalog.grid {
+    grid-template-columns: 1fr !important;
+  }
+}
