@@ -350,3 +350,61 @@ body[data-template="dani-elite"] #catalog .product strong {
     max-height: 190px;
   }
 }
+/* ==================================
+   CLANDES PREMIUM — ELITE 7
+   Negro diamante y plata
+   ================================== */
+
+body[data-template="royal-black"] {
+  background: #08090d;
+  color: #f1f5f9;
+}
+
+body[data-template="royal-black"] header {
+  background: linear-gradient(135deg, #090b12, #202634);
+  border-bottom: 1px solid #758195;
+}
+
+body[data-template="royal-black"] #hero {
+  background: linear-gradient(145deg, #171c28, #08090d);
+  border: 1px solid #64748b;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+body[data-template="royal-black"] #hero img,
+body[data-template="royal-black"] #hero video {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+body[data-template="royal-black"] #catalog .product {
+  background: linear-gradient(160deg, #1b2130, #0a0c12);
+  border: 1px solid #536174;
+  border-radius: 18px;
+  overflow: hidden;
+  min-width: 0;
+  box-shadow: 0 8px 25px #0008;
+}
+
+body[data-template="royal-black"] #catalog .clandes-media {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #10141e;
+}
+
+body[data-template="royal-black"] #catalog .clandes-media img,
+body[data-template="royal-black"] #catalog .clandes-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+body[data-template="royal-black"] #catalog .clandes-price {
+  color: #cbd5e1;
+  font-weight: 800;
+}
