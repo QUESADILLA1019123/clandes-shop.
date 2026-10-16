@@ -685,5 +685,25 @@ button:disabled {
         src="assets/seller.js?v=25"></script>
 
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const selector = document.getElementById('identityMode');
+  const emojiBox = document.getElementById('identityEmojiBox');
+  const imageBox = document.getElementById('identityImageBox');
+
+  if (!selector || !emojiBox || !imageBox) return;
+
+  function updateIdentityFields() {
+    const mode = selector.value;
+
+    emojiBox.classList.toggle('hidden', mode !== 'emoji');
+    imageBox.classList.toggle('hidden', mode !== 'image');
+  }
+
+  selector.addEventListener('change', updateIdentityFields);
+  updateIdentityFields();
+});
+</script>
+  
 </body>
 </html>
