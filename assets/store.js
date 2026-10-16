@@ -1,7 +1,7 @@
-
 /*
   CLANDES PREMIUM
-  Tienda publica personalizada
+  Tienda publica con tarjetas premium
+  PARTE 1 DE 3
 */
 
 import {
@@ -11,26 +11,21 @@ import {
   safeUrl,
   applyAccent,
   renderBackdrop,
-  mediaNode,
   currency
 } from './shared.js';
 
-// USUARIO DE LA TIENDA
 const params = new URLSearchParams(window.location.search);
 
-const username =
-  params.get('usuario') || 'berrydigital';
+const username = params.get('usuario') || 'berrydigital';
 
 let products = [];
 
-// TEXTO SEGURO
 function clean(value, fallback = '') {
   return typeof value === 'string'
     ? value.trim() || fallback
     : fallback;
 }
 
-// NOMBRE PERSONALIZADO
 function getShopName(shop) {
   return clean(
     shop.nombre_visible,
@@ -38,7 +33,6 @@ function getShopName(shop) {
   );
 }
 
-// LOGO, EMOJI O INICIAL
 function renderLogo(shop, name) {
   const logo = $('shopLogo');
   const emoji = clean(shop.logo_emoji);
@@ -50,12 +44,9 @@ function renderLogo(shop, name) {
   const fallback = emoji || initial;
 
   if (!logo) {
-    const oldLogo = $('logoInitial');
-
-    if (oldLogo) {
-      oldLogo.textContent = fallback;
+    if ($('logoInitial')) {
+      $('logoInitial').textContent = fallback;
     }
-
     return;
   }
 
@@ -78,11 +69,14 @@ function renderLogo(shop, name) {
 
     img.src = imageUrl;
     img.alt = 'Logo de ' + name;
-    img.style.width = '100%';
-    img.style.height = '100%';
-    img.style.objectFit = 'cover';
-    img.style.display = 'block';
-    img.style.borderRadius = 'inherit';
+
+    Object.assign(img.style, {
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      display: 'block',
+      borderRadius: 'inherit'
+    });
 
     img.addEventListener('error', showSymbol, {
       once: true
@@ -94,7 +88,6 @@ function renderLogo(shop, name) {
   }
 }
 
-// IDENTIDAD Y DISEÑO
 function configureShop(shop) {
   const name = getShopName(shop);
 
@@ -140,59 +133,186 @@ function configureShop(shop) {
     );
   }
 }
-
-// CREAR TARJETAS
-function makeCard(product) {
-  const card = document.createElement('article');
-  card.className = 'product';
-
-  const type = product.video_url
-    ? 'video'
-    : 'imagen';
-
-  const media = mediaNode(
-    product.video_url || product.imagen_url,
-    type
-  );
-
-  if (media) {
-    card.append(media);
+// ESTILOS DE TARJETAS PREMIUM
+function installCardStyles() {
+  if (document.getElementById('clandes-card-styles')) {
+    return;
   }
 
-  const title = document.createElement('h3');
-  title.textContent = clean(
-    product.nombre,
-    'Producto digital'
-  );
+  const style = document.createElement('style');
+  style.id = 'clandes-card-styles';
 
-  const description = document.createElement('p');
-  description.textContent = clean(
-    product.descripcion,
-    'Producto digital'
-  );
+  style.textContent = `
+    #catalog .product.clandes-premium-card {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding: 0;
+      border-radius: 18px;
+      border: 1px solid var(--accent, #D4AF37);
+      background: linear-gradient(
+        145deg,
+        #202230,
+        #0c0d16
+      );
+      box-shadow: 0 10px 25px rgba(0,0,0,.25);
+      transition: transform .25s, box-shadow .25s;
+      min-width: 0;
+    }
 
-  const price = document.createElement('strong');
-  price.textContent = currency(product.precio);
+    #catalog .clandes-premium-card:hover,
+    #catalog .clandes-premium-card:focus-within {
+      transform: translateY(-4px);
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.4),
+        0 0 18px var(--accent, #D4AF37);
+    }
 
-  const availability = document.createElement('p');
-  availability.className = 'muted';
+    #catalog .clandes-media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: #10121d;
+      display: grid;
+      place-items: center;
+    }
 
-  availability.textContent =
-    Number(product.stock || 0) > 0
-      ? 'Stock: Disponible'
-      : 'Stock: Consultar disponibilidad';
+    #catalog .clandes-media img,
+    #catalog .clandes-media video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-  card.append(
-    title,
-    description,
-    price,
-    availability
-  );
+    #catalog .clandes-media img {
+      transition: transform .35s;
+    }
 
-  return card;
+    #catalog .clandes-premium-card:hover img {
+      transform: scale(1.045);
+    }
+
+    #catalog .clandes-placeholder {
+      font-size: 3.5rem;
+      opacity: .7;
+    }
+
+    #catalog .clandes-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1;
+      padding: 6px 9px;
+      border-radius: 30px;
+      background: rgba(0,0,0,.8);
+      color: white;
+      font-size: .7rem;
+      font-weight: 800;
+    }
+
+    #catalog .clandes-card-body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 9px;
+      padding: 14px;
+      min-width: 0;
+    }
+
+    #catalog .clandes-card-body h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      overflow-wrap: anywhere;
+    }
+
+    #catalog .clandes-card-description {
+      margin: 0;
+      color: #b8bccb;
+      font-size: .84rem;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    #catalog .clandes-card-bottom {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 6px;
+    }
+
+    #catalog .clandes-price {
+      color: var(--accent, #D4AF37);
+      font-size: 1.3rem;
+      font-weight: 900;
+    }
+
+    #catalog .clandes-stock {
+      padding: 5px 8px;
+      border-radius: 30px;
+      background: rgba(38,166,91,.15);
+      color: #81e6a6;
+      font-size: .7rem;
+      font-weight: 700;
+    }
+
+    #catalog .clandes-stock.is-empty {
+      background: rgba(255,154,50,.15);
+      color: #f9bd77;
+    }
+
+    @media (max-width: 600px) {
+      #catalog .clandes-media {
+        aspect-ratio: 1 / 1;
+      }
+
+      #catalog .clandes-card-body {
+        padding: 11px;
+      }
+
+      #catalog .clandes-price {
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #catalog .clandes-premium-card,
+      #catalog .clandes-media img {
+        transition: none;
+      }
+    }
+  `;
+
+  document.head.append(style);
 }
 
-// BUSCADOR Y CATALOGO
+// CREAR TARJETA DE PRODUCTO
+function makeCard(product) {
+  const card = document.createElement('article');
+  card.className = 'product clandes-premium-card';
+
+  const media = document.createElement('div');
+  media.className = 'clandes-media';
+
+  const videoUrl = clean(product.video_url);
+  const imageUrl = clean(product.imagen_url);
+
+  let type = 'none';
+
+  if (videoUrl && safeUrl(videoUrl)) {
+    const video = document.createElement('video');
+
+    video.src = videoUrl;
+    video.controls = true;
+    video.preload = 'metadata';
+    video.playsInline
+    // BUSCADOR Y CATALOGO
 function paint() {
   const search = $('search');
 
@@ -215,6 +335,7 @@ function paint() {
   }
 
   const catalog = $('catalog');
+
   if (!catalog) return;
 
   catalog.replaceChildren();
@@ -223,6 +344,7 @@ function paint() {
     const empty = document.createElement('p');
 
     empty.className = 'muted';
+
     empty.textContent = query
       ? 'No encontramos productos con esa búsqueda.'
       : 'No hay productos activos disponibles.';
@@ -242,6 +364,8 @@ function paint() {
 
 // CARGAR TIENDA Y PRODUCTOS
 async function init() {
+  installCardStyles();
+
   try {
     const { data: shop, error: shopError } = await db
       .from('tiendas')
@@ -255,7 +379,9 @@ async function init() {
       .eq('estado', 'activa')
       .maybeSingle();
 
-    if (shopError) throw shopError;
+    if (shopError) {
+      throw shopError;
+    }
 
     if (!shop) {
       throw Error('No se encontró una tienda activa.');
@@ -273,7 +399,9 @@ async function init() {
       .eq('activo', true)
       .order('nombre');
 
-    if (productError) throw productError;
+    if (productError) {
+      throw productError;
+    }
 
     products = data || [];
 
@@ -294,5 +422,5 @@ if ($('search')) {
   $('search').addEventListener('input', paint);
 }
 
-// INICIAR
+// INICIAR TIENDA
 init();
