@@ -217,3 +217,51 @@ button:active,
     grid-template-columns: 1fr !important;
   }
 }
+
+
+/* CLANDES PREMIUM - Multimedia ordenada */
+
+/* Portada de tienda: tamaño controlado */
+#hero {
+  overflow: hidden !important;
+}
+
+#hero img,
+#hero video,
+.hero img,
+.hero video {
+  display: block;
+  width: 100% !important;
+  height: 220px !important;
+  max-height: 220px !important;
+  object-fit: cover !important;
+  border-radius: 12px;
+}
+
+/* Imágenes y videos del catálogo */
+#catalog .product img,
+#catalog .product video {
+  display: block;
+  width: 100% !important;
+  height: 145px !important;
+  max-height: 145px !important;
+  object-fit: contain !important;
+  background: #101018;
+}
+
+/* Adaptación para celulares */
+@media (max-width: 700px) {
+  #hero img,
+  #hero video,
+  .hero img,
+  .hero video {
+    height: 160px !important;
+    max-height: 160px !important;
+  }
+
+  #catalog .product img,
+  #catalog .product video {
+    height: 120px !important;
+    max-height: 120px !important;
+  }
+}
