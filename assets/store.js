@@ -311,7 +311,93 @@ function makeCard(product) {
     video.src = videoUrl;
     video.controls = true;
     video.preload = 'metadata';
-    video.playsInline
+    video.playsInline = true;
+
+    if (imageUrl && safeUrl(imageUrl)) {
+      video.poster = imageUrl;
+    }
+
+    media.append(video);
+    type = 'video';
+
+  } else if (imageUrl && safeUrl(imageUrl)) {
+    const img = document.createElement('img');
+
+    img.src = imageUrl;
+    img.alt = 'Imagen de ' + clean(
+      product.nombre,
+      'producto'
+    );
+    img.loading = 'lazy';
+
+    img.addEventListener('error', () => {
+      media.replaceChildren();
+
+      const fallback = document.createElement('span');
+      fallback.className = 'clandes-placeholder';
+      fallback.textContent = '📦';
+
+      media.append(fallback);
+    }, { once: true });
+
+    media.append(img);
+    type = 'image';
+
+  } else {
+    const placeholder = document.createElement('span');
+    placeholder.className = 'clandes-placeholder';
+    placeholder.textContent = '📦';
+    media.append(placeholder);
+  }
+
+  if (type !== 'none') {
+    const tag = document.createElement('span');
+    tag.className = 'clandes-tag';
+    tag.textContent =
+      type === 'video' ? '▶ VIDEO' : '✦ DESTACADO';
+
+    media.append(tag);
+  }
+
+  const body = document.createElement('div');
+  body.className = 'clandes-card-body';
+
+  const title = document.createElement('h3');
+  title.textContent = clean(
+    product.nombre,
+    'Producto digital'
+  );
+
+  const description = document.createElement('p');
+  description.className = 'clandes-card-description';
+  description.textContent = clean(
+    product.descripcion,
+    'Producto digital'
+  );
+
+  const bottom = document.createElement('div');
+  bottom.className = 'clandes-card-bottom';
+
+  const price = document.createElement('strong');
+  price.className = 'clandes-price';
+  price.textContent = currency(product.precio);
+
+  const stock = document.createElement('span');
+  const available = Number(product.stock || 0) > 0;
+
+  stock.className =
+    'clandes-stock' + (available ? '' : ' is-empty');
+
+  stock.textContent = available
+    ? '● Disponible'
+    : 'Consultar stock';
+
+  bottom.append(price, stock);
+  body.append(title, description, bottom);
+  card.append(media, body);
+
+  return card;
+}
     // BUSCADOR Y CATALOGO
 function paint() {
   const search = $('search');
