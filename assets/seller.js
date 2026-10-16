@@ -476,7 +476,7 @@ $('loginForm').addEventListener(
 
       if (res.error) throw res.error;
 
-      $('password').value = '';
+      
 
       await session();
 
