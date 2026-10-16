@@ -309,9 +309,18 @@ function makeCard(product) {
     const video = document.createElement('video');
 
     video.src = videoUrl;
-    video.controls = true;
-    video.preload = 'metadata';
-    video.playsInline = true;
+    video.controls = false;
+video.autoplay = true;
+video.loop = true;
+video.muted = true;
+video.defaultMuted = true;
+video.playsInline = true;
+video.preload = 'metadata';
+
+video.setAttribute('autoplay', '');
+video.setAttribute('loop', '');
+video.setAttribute('muted', '');
+video.setAttribute('playsinline', '');
 
     if (imageUrl && safeUrl(imageUrl)) {
       video.poster = imageUrl;
